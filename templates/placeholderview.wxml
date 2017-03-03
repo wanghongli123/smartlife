@@ -1,0 +1,25 @@
+<!--占位页面-->
+<!--info:
+showplaceholder: 是否显示占位页面.
+image: 图片.
+placeholder: 占位符.
+operate
+event:
+pagestate: 0:加载数据中, 1:成功加载数据, 2:加载数据出错, 3: 无数据
+clickOnPlaceholderView-->
+
+<template name="placeholderview">
+<view class="placeholder-view {{pagestate==1?'view-disappear':''}}">
+    <block wx:if="{{pagestate==0}}">
+        <image src="../../resources/icon_loading.gif" class="loading-image"></image>
+    </block>
+    <block wx:elif="{{pagestate==2}}">
+        <image wx:if="{{image&&image.length}}" class="error-image" src="{{image}}"></image>
+        加载数据出错
+        <view class="reload-view" bindtap="clickOnPlacehoderView">点击重新加载</view>
+    </block>
+    <block wx:else>
+        暂无数据
+    </block>
+</view>
+</template>

@@ -1,0 +1,22 @@
+<!--店铺详情，底部操作页面-->
+<!--绑定的数据：
+isCollected: 是否已经收藏
+collectionInfo: 收藏的人数情况-->
+
+<template name="shopdetailbottomview">
+    <view class="shopdetail-bottom-view">
+        <view class="me-view" catchtap="clickOnMeView">
+            <image class="icon_me" src="../../resources/icon_user_black.png"></image>
+            我的
+        </view>
+        <view class="collection-view" catchtap="clickOnCollectionView">
+            <image class="icon_collection" src="../../resources/icon_favorite.png"></image>
+            <text>收藏</text>
+            <text class="collectioninfo-text">{{collectionInfo}}</text>
+        </view>
+        <view class="telphone-view" catchtap="clickOnTelphoneView">
+            <image class="icon_phone" src="../../resources/icon_phone.png"></image>
+            电话联系
+        </view>
+    </view>
+</template>

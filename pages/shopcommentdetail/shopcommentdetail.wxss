@@ -1,0 +1,60 @@
+/* pages/shopcommentdetail/shopcommentdetail.wxss */
+
+@import '../../templates/shopcell.wxss';
+@import '../../templates/placeholderview.wxss';
+@import '../../templates/shopcommentcard.wxss';
+
+.bg-view {
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+}
+
+.content-view {
+    z-index: 1;
+    width: 100%;
+    padding-top: 30rpx;
+    position: relative;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.merchant-view {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 25rpx 0 10rpx 0;
+    color: #888888;
+    font-size: 14px;
+    margin-top: 26rpx;
+    background-color: white;
+}
+
+.merchant-view .seperator-line {
+    width: 80rpx;
+    height: 6rpx;
+    margin-top: 20rpx;
+    border-radius: 3rox;
+    background-color: #dedede; 
+}
+
+.recommand-view {
+    color: white;
+    font-size: 14px;
+    margin-top: 84rpx;
+    
+}
+
+.recommand-view .title-view {
+
+}
+
+.recommand-view .title-view {
+    width: 100%;
+    height: 80rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff4466;
+}

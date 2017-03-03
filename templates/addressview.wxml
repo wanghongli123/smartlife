@@ -1,0 +1,16 @@
+<!--位置view-->
+<!--数据:
+addr-->
+
+<template name="addressview">
+    <view class="address-view">
+        <view class="left-view">
+            <image class="left-icon" src="../../resources/icon_location.png"></image>
+            <view class="detail-view">{{addr}}</view>
+        </view>
+        <view class="view-arrowbox">
+            <i class="right-arrow1"></i>
+            <i class="right-arrow2"></i>
+        </view>
+    </view>
+</template>

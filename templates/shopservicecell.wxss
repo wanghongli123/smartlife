@@ -1,0 +1,52 @@
+.shop-service-cell {
+    height: 100rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 30rpx 30rpx 0 30rpx;
+}
+
+.shop-service-cell .left-view {
+    flex: 1;
+    width: 60%;
+    height: 100%;
+}
+
+.shop-service-cell .name-view {
+    flex: 1;
+    width: 100%;
+    color: #444444;
+    font-size: 14px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.shop-service-cell .score-view {
+    flex: 1;
+    width: 100%;
+    color: #9ca4a8;
+    font-size: 12px;
+    font-family: PingFangSC;
+    display: flex;
+    flex-direction: row;
+    margin-top: 12rpx;
+}
+
+.shop-service-cell .stars-view {
+    height: 100%;
+    margin-right: 16rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;    
+}
+
+.shop-service-cell .star-view {
+    width: 22rpx;
+    height: 22rpx;
+    margin: 0 3rpx;
+}

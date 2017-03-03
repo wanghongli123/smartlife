@@ -1,0 +1,34 @@
+.score-view {
+    width: 100%;
+    display: flex;
+    overflow: scroll;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20rpx 0;
+}
+
+.score-view .stars-view {
+    display: flex;
+    flex-direction: row;
+}
+
+.score-view .star-view {
+    width: 63rpx;
+    height: 60rpx;
+    margin: 0 9rpx;
+}
+
+.score-view .label-view {
+    margin-top: 20rpx;
+    font-family: PingFangSC;
+    font-size: 12px;
+}
+
+.score-view .label-view.score-color {
+    color: #fda32c;
+}
+
+.score-view .label-view.default-color {
+    color: #9ca4a8;
+}

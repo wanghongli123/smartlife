@@ -1,0 +1,230 @@
+.shopcommentcard-view {
+    width: 100%;
+    padding: 20rpx;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.shopcommentcard-view .content-view {
+    width: 100%;
+    padding: 20rpx;
+    display: flex;
+    flex-direction: row;
+    border-radius: 10rpx;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.shopcommentcard-view .avatar {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+}
+
+.shopcommentcard-view .detail-view {
+    flex: 1;
+    height: 100%;
+    margin-left: 20rpx;
+    box-sizing: border-box;
+}   
+
+.shopcommentcard-view .top-view {
+    font-size: 14px;
+    height: 40rpx;
+    color: #9ca4a8;
+    display: flex;
+    margin-top: 6rpx;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    justify-content: space-between;
+}
+
+.shopcommentcard-view .name-text {
+    font-size: 14px;
+    color: #232323;
+    font-weight: 6000;
+    font-family: PingFangSC;
+    margin-right: 20rpx;
+}
+
+.shopcommentcard-view .service-view {
+    font-size: 15px;
+    color: #ff4466;
+    height: 42rpx;
+    font-weight: 600;
+    margin-top: 10rpx;
+    font-family: PingFangSC;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.shopcommentcard-view .score-view { 
+    height: 40rpx;
+    font-size: 14px;
+    margin-top: 17rpx;
+    color: #9ca4a8;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.shopcommentcard-view .stars-view {
+    width: 200rpx;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.shopcommentcard-view .star-view {
+    width: 37rpx;
+    height: 37rpx;
+}
+
+.shopcommentcard-view .comment-view {
+    margin-top: 20rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-height: 1.73;
+    font-size: 15px;
+    color: #343434;
+    font-family: PingFangSC;
+}
+
+.shopcommentcard-view .limit-line {
+    -webkit-line-clamp: 4;
+}
+
+.shopcommentcard-view .tags-view {
+    width: 100%;
+    margin-top: 25rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.shopcommentcard-view .tag-view {
+    font-size: 13px;
+    color: #9ca4a8;
+    font-family: PingFangSC;
+    padding: 9rpx 15rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20rpx;
+    border: solid 1rpx #9ca4a8;
+    border-radius: 12rpx;
+}
+
+.shopcommentcard-view .photos-view {
+    margin-top: 25rpx;
+    width: 100%;
+    height: 316rpx;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.shopcommentcard-view .photos-view image {
+    border-radius: 10rpx;
+}
+
+.shopcommentcard-view .big-image-view {
+    border-radius: 10rpx;
+}
+
+.shopcommentcard-view .bigleft-image-view {
+    flex: 2;
+    height: 100%;
+    border-radius: 10rpx;
+}
+
+.shopcommentcard-view .left-image-view {
+    flex: 1;
+    height: 100%;
+    border-radius: 10rpx;
+}
+
+.shopcommentcard-view .hpadding-view {
+    width: 10rpx;
+    height: 100%;
+}
+
+.shopcommentcard-view .right-image-view {
+    flex: 1;
+    height: 100%;
+    border-radius: 10rpx;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-sizing: border-box;
+    justify-content: space-between;
+}
+
+.shopcommentcard-view .top-image-view {
+    flex: 1;
+    width: 100%;
+    height: 100rpx;
+    border-radius: 10rpx;
+}
+
+.shopcommentcard-view .vpadding-view {
+    width: 100%;
+    height: 10rpx;
+}
+
+.shopcommentcard-view .bottom-image-view {
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 10rpx;
+}
+
+.shopcommentcard-view .more-image-view {
+    color: white;
+    font-size: 10px;
+    border-radius: 10rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    background-color: rgba(1, 0, 0, 0.3);
+}
+
+.shopcommentcard-view .other-view {
+    margin-top: 25rpx;
+    font-size: 12px;
+    color: #444444;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.shopcommentcard-view .up-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shopcommentcard-view .up-view.active {
+    color: #9ca4a8;
+}
+
+.shopcommentcard-view .up-icon {
+    width: 26rpx;
+    height: 28rpx;
+    margin-right: 20rpx;
+}

@@ -1,0 +1,74 @@
+/**app.wxss**/
+page {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background-color: #f2f2f2;
+} 
+
+/*内容完全居中*/
+.view-itemscenter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.view-disappear {
+    display: none;
+}
+
+.view-allscreen {
+    width: 100%;
+    height: 100%;
+}
+
+.view-imageplaceholder {
+    background-size: 100% 100%;
+    background: url('../../resources/shopcomment-bg.jpg') no-repeat center center;
+}
+
+.view-avatarplaceholder {
+    background-size: 100% 100%;
+    background: url('../../resources/shopcomment-bg.jpg') no-repeat center center;
+}
+
+/*>*/
+.view-arrowbox {
+    width: 20rpx;
+    height: 20rpx;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.right-arrow1,.right-arrow2{
+    width:0;
+    height:0;
+    display:block;
+    position:absolute;
+    left:0;
+    top:0;
+    border-top:10rpx transparent dashed;
+    border-right:10rpx transparent dashed;
+    border-bottom:10rpx transparent dashed;
+    border-left:10rpx white solid;
+    overflow:hidden;
+}
+.right-arrow1{
+    left:1rpx;/*重要*/
+    border-left:12rpx #444444 solid;
+}
+.right-arrow2{
+    border-left:12rpx white solid;
+}

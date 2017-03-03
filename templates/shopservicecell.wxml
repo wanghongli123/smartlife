@@ -1,0 +1,26 @@
+<!--
+店铺详情服务项目cell
+name: 项目名称
+score: 得分
+description: 得分描述
+-->
+
+<template name="shopservicecell">
+    <view class="shop-service-cell" catchtap="clickOnShopServicesView">
+        <view class="left-view">
+            <view class="name-view">{{name}}</view>
+            <view class="score-view">
+                <view class="stars-view">
+                    <block wx:for="{{[1,2,3,4,5]}}" wx:key="*this">
+                        <image src="{{item <= score ? '../../resources/icon_star.png':(item <= score + 0.5 ?'../../resources/icon_half-star.png': '../../resources/icon_empty-star.png')}}" class="star-view"></image>
+                    </block>
+                </view>
+                {{description}}
+            </view>
+        </view>
+        <view class="view-arrowbox">
+            <i class="right-arrow1"></i>
+            <i class="right-arrow2"></i>
+        </view>
+    </view>
+</template>

@@ -1,0 +1,15 @@
+<!--统一标签view， 尚未使用-->
+<!--参数: 
+type=>标签的类型 目前两类.
+img: url
+title-->
+
+<template name="shoptagsview">
+    <view class="shop-tags-view">
+        <block wx:for="{{tags}}" wx:key="*this">
+            <view class="tag-view">
+                {{item}}
+            </view>
+        </block>
+    </view>
+</template>

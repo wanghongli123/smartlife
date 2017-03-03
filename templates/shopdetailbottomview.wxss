@@ -1,0 +1,83 @@
+.shopdetail-bottom-view {
+    bottom: 0;
+    width: 100%;
+    height: 110rpx;
+    padding: 0 20rpx;
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    background-color: white;
+    box-shadow: 0 -1rpx 6rpx rgba(0, 0, 0, 0.25);
+    color: #444444;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: PingFangSC;
+}
+
+.shopdetail-bottom-view .me-view {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.shopdetail-bottom-view .icon_me {
+    width: 31rpx;
+    height: 36rpx;
+}
+
+.shopdetail-bottom-view .collection-view {
+    flex: 1.5;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.shopdetail-bottom-view .icon_collection {
+    width: 36rpx;
+    height: 35rpx;
+}
+
+.shopdetail-bottom-view .collectioninfo-text {
+    color: #9ca4a8;
+    font-size: 12px;
+    margin-left: 20rpx;
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.shopdetail-bottom-view .telphone-view {
+    flex: 2.5;
+    height: 70rpx;
+    border-radius: 11rpx;
+    font-size: 14px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff4466;
+}
+
+.shopdetail-bottom-view .icon_phone {
+    width: 35rpx;
+    height: 35rpx;
+}
+
+.shopdetail-bottom-view image {
+    margin-right: 10rpx;
+}

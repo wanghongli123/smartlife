@@ -1,0 +1,31 @@
+.address-view {
+    width: 100%;
+    padding: 0 30rpx;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.address-view .left-view {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.address-view .left-icon {
+    width: 22rpx;
+    height: 30rpx;
+    margin-right: 15rpx;
+}
+
+.address-view .detail-view {
+    flex: 1;
+    font-size: 12px;
+    color: #444444;
+    overflow: hidden;
+    padding: 0 15rpx;
+    box-sizing: border-box;
+    font-family: PingFangSC;
+}

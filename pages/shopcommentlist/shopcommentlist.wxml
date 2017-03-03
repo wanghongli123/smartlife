@@ -1,0 +1,16 @@
+<view class="container">
+    <block wx:for="{{comments}}" wx:key="*this">
+        <import src="../../templates/shopcommentcell"/>
+        <template is="shopcommentcell" data="{{...item, index}}"/>
+    </block>
+
+    <!--加载更多-->
+    <block wx:if="{{comments&&comments.length>0}}">
+        <import src="../../templates/loadingmorecell"/>
+        <template is="loadingmorecell" data="{{hasMore}}"/>
+    </block>
+
+    <!--无数据提示页面-->
+    <import src="../../templates/placeholderview"/>
+    <template is="placeholderview" data="{{pagestate: pageState}}"/>
+</view>

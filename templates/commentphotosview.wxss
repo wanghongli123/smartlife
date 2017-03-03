@@ -1,0 +1,42 @@
+.comment-photos-view {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    padding: 20rpx 0;
+    flex-wrap: wrap;
+    z-index: 999;
+    position: relative;
+    overflow: hidden;
+}
+
+.comment-photos-view .photo-view { 
+    position: relative;
+    margin-right: 18rpx;
+}
+
+.comment-photos-view .closing-image {
+    width: 46rpx;
+    height: 46rpx;
+    position: absolute;
+    top: -14rpx;
+    right: -14rpx;
+}
+
+.comment-photos-view view {
+    width: 110rpx;
+    height: 110rpx;
+    border-radius: 5px;
+    border: solid 1rpx #c2c9cb;
+}
+
+.comment-photos-view .adding-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comment-photos-view .adding-view image {
+    width: 50rpx;
+    height: 39rpx;
+}

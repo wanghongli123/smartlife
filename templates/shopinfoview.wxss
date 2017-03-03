@@ -1,0 +1,46 @@
+.shop-view {
+    display: flex;
+    flex-direction: row;
+    padding: 20rpx;
+    align-items: center;
+    justify-content: center;
+    height: 100rpx;
+}
+
+.shop-view .avatar {
+    width: 150rpx;
+    height: 100%;
+}
+
+.shop-view .info-view {
+    flex: 1;
+    height: 100%;
+    padding-top: 20rpx;
+    margin-left: 20rpx;
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.shop-view .name-view {
+    color: #232323;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: PingFangSC;
+}
+
+.shop-view .service-view {
+    color: #ff4466;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: PingFangSC;
+}
+
+.shop-view .info-view view {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    flex-direction: row;
+}

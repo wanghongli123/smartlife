@@ -1,0 +1,98 @@
+<view class="container">
+    <scroll-view class="shop-view" scroll-y="true" scroll-into-view="{{scrollIntoView}}">
+        <swiper wx:if="{{shopInfo&&shopInfo.images.length>0}}" class="shopimages-view" indicator-dots="true" autoplay="true" interval="5000" duration="1000" circular="true">
+            <block wx:for="{{shopInfo.images}}" wx:key="*this">
+                <swiper-item>
+                    <view class="view-allscreen view-imageplaceholder">
+                        <image class="view-allscreen" src="{{item}}" mode="aspectFill"></image>
+                    </view>
+                </swiper-item>
+            </block>
+        </swiper>
+
+        <!--shopcell-->
+        <import src="../../templates/shopcell"/>
+        <template is="shopcell" data="{{...shopInfo, canCollect: false, nameFontSize: 17, seperator: false}}"/>
+
+        <!--addressview-->
+        <import src="../../templates/addressview"/>
+        <template is="addressview" data="{{addr: shopInfo.address}}"/>
+
+        <view class="instruction-view">
+            <view class="line-view"></view>
+            <view class="options-view">
+                <block wx:for="{{['服务项目','点赞评价','商户信息']}}" wx:key="*this">
+                    <view class="option-view {{0==index?'option-item-active':''}}" bindtap="clickOnOptionView" data-index="{{index}}">
+                        <view class="option-item">{{item}}</view>
+                        <view class="option-bottom-view {{0==index?'option-bottom-active':''}}"></view>
+                    </view>
+                </block>
+            </view>
+            <view class="line-view"></view>
+        </view>
+
+        <import src="../../templates/commonsectionview"/>
+        <!--评论-->
+        <block wx:if="{{shopInfo&&shopInfo.services&&shopInfo.services.length>0}}">
+            <view id="view-0" class="vertical-padding-view"></view>
+            <template is="commonsectionview" data="{{title:'服务项目', action: '全部 ' + shopInfo.services.length + ' 项服务'}}"></template>
+
+            <block wx:for="{{shopInfo.services}}" wx:key="*this">
+                <!--服务类目-->
+                <import src="../../templates/shopservicecell"/>
+                <template is="shopservicecell" data="{{...item}}"/>
+            </block>
+        </block>
+        
+        <!--总评分-->
+        <block wx:if="{{shopInfo&&shopInfo.scoreSummary}}">
+            <view id="view-1" class="vertical-padding-view"></view>
+            <import src="../../templates/commentsummaryview"/>
+            <template is="commentsummaryview" data="{{...shopInfo.scoreSummary}}"/>
+        </block>
+
+        <!--师傅印象-->
+        <block wx:if="{{shopInfo&&shopInfo.commentTags&&shopInfo.commentTags.length>0}}">
+            <view class="vertical-padding-view"></view>
+            <template is="commonsectionview" data="{{title:'师傅印象', action: '展开全部'}}"></template>
+            <view class="vertical-padding-view"></view>
+            <import src="../../templates/shoptagsview"/>
+            <template is="shoptagsview" data="{{tags: shopInfo.commentTags}}"/>
+        </block>
+
+        <!--商户评价-->
+        <block wx:if="{{shopInfo&&shopInfo.commented_num>0}}">
+            <view class="vertical-padding-view"></view>
+            <template is="commonsectionview" data="{{title:'商户评价', action: '全部 ' + shopInfo.commented_num + ' 项服务'}}"></template>
+            <import src="../../templates/shopcommentcell"/>
+            <block wx:for="{{shopInfo.comments}}">
+                <template is="shopcommentcell" data="{{...item}}"/>
+            </block>
+        </block>
+
+        <view id="view-2" class="seperator-box">
+            <view class="seperator-view"></view>
+        </view>
+
+        <block wx:if="{{shopInfo&&shopInfo.desc.length>0}}">
+            <view class="vertical-padding-view"></view>
+            <template is="commonsectionview" data="{{title:'店铺简介', action: '展开全部', actionName: 'clickShowShopDesc'}}"></template>
+            <view class="shop-intro-view limit-line">{{shopInfo.desc}}</view>
+        </block>
+
+        <block wx:if="{{shopInfo&&shopInfo.character.length>0}}">
+            <view class="vertical-padding-view"></view>
+            <template is="commonsectionview" data="{{title:'特色服务', action: '展开全部', actionName: 'clickShowShopCharacter'}}"></template>
+            <view class="shop-intro-view limit-line">{{shopInfo.character}}</view>
+        </block>
+
+        <view class="bottom-padding-view"></view>
+
+        <!--底部操作栏-->
+        <import src="../../templates/shopdetailbottomview"/>
+        <template is="shopdetailbottomview" data="{{isCollected: shopInfo.collected, collectionInfo: (shopInfo.collected_num ? shopInfo.collected_num : 0) +'人'}}"/>
+    </scroll-view>
+    <!--无数据提示页面-->
+    <import src="../../templates/placeholderview"/>
+    <template is="placeholderview" data="{{pagestate: pageState}}"/>
+</view>

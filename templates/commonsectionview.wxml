@@ -1,0 +1,13 @@
+<!--通用sectionview, 目前在店铺详情中使用-->
+<!--
+title
+action
+events: clickOnActionView
+-->
+
+<template name="commonsectionview">
+    <view class="common-section-view">
+        {{title}}
+        <view class="action-view" catchtap="{{actionName}}">{{action}}</view>
+    </view>
+</template>

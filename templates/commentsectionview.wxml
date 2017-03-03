@@ -1,0 +1,9 @@
+<!--评论页面，cell的section view-->
+
+<template name="commentsectionview">
+    <view class="comment-section-view">
+        <view class="line-view"></view>
+        <view class="title-view">{{title}}</view>
+        <view class="line-view"></view>
+    </view>
+</template>

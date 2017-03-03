@@ -1,0 +1,13 @@
+<!--加载更多cell-->
+
+<template name="loadingmorecell">
+    <view class="loadingmore-view">
+        <block wx:if="{{hasMore}}">
+            <image src="../../resources/loading.gif"></image>
+            <text>努力加载更多数据中...</text>
+        </block>
+        <block wx:else>
+            <text>无更多数据</text>
+        </block>
+    </view>
+</template>

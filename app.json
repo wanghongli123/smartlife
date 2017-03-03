@@ -1,0 +1,15 @@
+{
+  "pages":[
+    "pages/shopcommentdetail/shopcommentdetail"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#01d1c1",
+    "navigationBarTitleText": "生活圈",
+    "navigationBarTextStyle":"light"
+  },
+  "networkTimeout": {
+    "request": 20000,
+    "uploadFile": 20000
+  }
+}

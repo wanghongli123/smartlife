@@ -1,0 +1,70 @@
+<scroll-view wx:if="{{shopInfo}}" scroll-y="true" class="container commentview-bgcolor">
+    <!--店铺信息-->
+    <import src="../../templates/shopinfoview"/>
+    <template is="shopinfoview" data="{{name: shopInfo.name, service: shopInfo.service}}"/>
+
+    <!--综合评论-->
+    <view class="content-view">
+        <import src="../../templates/commentsectionview"/>
+        <template is="commentsectionview" data="{{title: '综合评价'}}"/>
+        <import src="../../templates/scoreview"/>
+        <template is="scoreview" data="{{scorelabel: totalScoreLabel, score: totalScore, key: 'totalScore'}}"/>
+
+        <block wx:if="tags&&tags.length>0">
+            <import src="../../templates/commentsectionview"/>
+            <template is="commentsectionview" data="{{title: '点赞师傅'}}"/>
+            <import src="../../templates/commenttagsview"/>
+            <template is="commenttagsview" data="{{tags, tagEnable, showAddingMoreTag}}"/>
+        </block>
+
+        <import src="../../templates/commentsectionview"/>
+        <template is="commentsectionview" data="{{title: '公开评价内容'}}"/>
+        <view class="input-view {{comment.length>0?'editingPadding':'normalPadding'}}">
+            <textarea class="input-areatext" auto-height="true" placeholder-class="placeholder-areatext" placeholder="如如果您觉得如果您觉得我们的服如如果您觉得如果您觉得我们的服务很棒…" bindinput="onCommentAreatextChanged"/>
+            <view class="input-alert-view">
+                <view>
+                    <image src="../../resources/icon_comment_alert.png"></image>
+                    所有人可见
+                </view>
+                <view>还可以输入{{canInputCommentCount}}字</view>
+            </view>
+        </view>
+
+        <import src="../../templates/commentphotosview"/>
+        <template is="commentphotosview" data="{{photos:images, canAddingMorePhotos}}"></template>
+
+        <import src="../../templates/commentsectionview"/>
+        <template is="commentsectionview" data="{{title: '给师傅的悄悄话'}}"/>
+        <view class="input-view {{advice.length>0?'editingPadding':'normalPadding'}}">
+            <textarea class="input-areatext" auto-height="true" placeholder-class="placeholder-areatext" placeholder="如如果您觉得如果您觉得我们的服如如果您觉得如果您觉得我们的服务很棒…" bindinput="onAdviceAreatextChanged"/>
+            <view class="input-alert-view">
+                <view>
+                    <image src="../../resources/icon_comment_alert.png"></image>
+                    仅师傅可见
+                </view>
+                <view>还可以输入{{canInputAdviceCount}}字</view>
+            </view>
+        </view>
+
+        <import src="../../templates/commentsectionview"/>
+        <template is="commentsectionview" data="{{title: '体验评分'}}"/>
+
+        <view class="padding-view"></view>
+        <import src="../../templates/commonscoreview"/>
+        <template is="commonscoreview" data="{{title: '品质', score: pinzhiScore, key: 'pinzhiScore', scoreLabel: pinzhiScoreLabel}}"/>
+
+        <view class="padding-view"></view>
+        <import src="../../templates/commonscoreview"/>
+        <template is="commonscoreview" data="{{title: '速度', score: suduScore, key: 'suduScore', scoreLabel: suduScoreLabel}}"/>
+
+        <view class="padding-view"></view>
+        <import src="../../templates/commonscoreview"/>
+        <template is="commonscoreview" data="{{title: '态度', score: taiduScore, key: 'taiduScore', scoreLabel: taiduScoreLabel}}"/>
+    </view>
+    
+    <view class="bottom-view"></view>
+    <view class="confirm-view {{postingEnable?'posting-enable-true':'posting-enable-false'}}" catchtap="clickOnPostingCommentView">确定</view>
+</scroll-view>
+<!--无数据提示页面-->
+<import src="../../templates/placeholderview"/>
+<template is="placeholderview" data="{{pagestate: pageState}}"/>

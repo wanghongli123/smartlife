@@ -1,0 +1,15 @@
+<!--点赞页面，照片控件-->
+
+<template name="commentphotosview">
+    <view class="comment-photos-view">
+        <block wx:for="{{images}}" wx:key="*this">
+            <view class="photo-view">
+                <image class="photo-image" src="{{item}}"></image>
+                <image catchtap="clickOnDeleteImageView" class="closing-image" src="../../resources/icon_close_photo.png" data-index="{{index}}"></image>
+            </view>
+        </block>
+        <view wx:if="{{canAddingMorePhotos}}" class="adding-view" catchtap="clickOnAddingImageView">
+            <image src="../../resources/icon_camera.png"></image>
+        </view>
+    </view>
+</template>

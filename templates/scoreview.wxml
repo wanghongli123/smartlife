@@ -1,0 +1,12 @@
+<!--点赞页面，总评分数控件-->
+
+<template name="scoreview">
+    <view class="score-view">
+        <view class="stars-view">
+            <block wx:for="{{[1,2,3,4,5]}}" wx:key="*this">
+                <image catchtap="clickOnScoreView" data-key="{{key}}" data-score="{{item}}" src="{{item <= score ? '../../resources/icon_star_big.png':'../../resources/icon_empty-star-big.png'}}" class="star-view"></image>
+            </block>
+        </view>
+        <view class="label-view {{score>0?'score-color':'default-color'}}">{{scorelabel}}</view>
+    </view>
+</template>

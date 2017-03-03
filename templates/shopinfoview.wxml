@@ -1,0 +1,13 @@
+<!--店铺详情控件，目前使用在点评店铺-->
+
+<template name="shopinfoview">
+    <view class="shop-view">
+        <view class="avatar view-avatarplaceholder">
+            <image class="view-allscreen" src=""></image>
+        </view>
+        <view class="info-view">
+            <view class="name-view">{{name}}</view>
+            <view class="service-view">{{service}}</view>
+        </view>
+    </view>
+</template>

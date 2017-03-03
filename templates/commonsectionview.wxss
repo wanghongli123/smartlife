@@ -1,0 +1,15 @@
+.common-section-view {
+    color: #232323;
+    font-size: 13px;
+    font-family: PingFangSC;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    padding: 0 30rpx;
+    justify-content: space-between;
+}
+
+.common-section-view .action-view {
+    color: #00b3a5;
+}

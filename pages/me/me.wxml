@@ -1,0 +1,14 @@
+<view class="container">
+    <import src="../../templates/"/>
+
+    <!--无数据提示页面-->
+    <view class="{{noDatas ? 'view-disappear' : ''}}">
+    </view>
+
+    <!--底部tabbar-->
+    <view class="tab-view">
+        <block wx:for="{{tabNames}}" wx:key="*this">
+            <view class="tab-item {{tabIndex==index?'active':''}}" data-tabIndex="{{index}}" bindtap="clickOnTabitemView">{{item}}</view>
+        </block>
+    </view>
+</view>

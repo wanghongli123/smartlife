@@ -1,0 +1,122 @@
+.comment-summary-view {
+    width: 100%;
+    height: 200rpx;
+    padding: 0 30rpx;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-summary-view .middle-view {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin: 36rpx 0;
+}
+
+.comment-summary-view .line-view {
+    border-top: solid 1rpx #eaeaea;
+    width: 100%;
+}
+
+.comment-summary-view .left-view {
+    flex: 4;
+    height: 100%;
+    color: #444444;
+    font-size: 13px;
+    font-family: PingFangSC;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.comment-summary-view .score-view {
+    color: #ffb238;
+    font-size: 24px;
+    font-weight: 600;
+    font-family: PingFangSC;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.comment-summary-view .score-view image {
+    width: 42rpx;
+    height: 40rpx;
+    margin-right: 20rpx;
+}
+
+.comment-summary-view .person-view {
+    font-family: PingFangSC;
+    font-size: 12px;
+    color: #9ca4a8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.comment-summary-view .seperation-view {
+    width: 0%;
+    height: 100%;
+    border-left: solid 1rpx #eaeaea;
+}
+
+.comment-summary-view .right-view {
+    flex: 6;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-sizing: border-box;
+    justify-content: space-between;
+}
+
+.comment-summary-view .item-score-view {
+    width: 100%;
+    color: #444444;
+    font-size: 13px;
+    font-family: PingFangSC;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment-summary-view .name-view {
+    flex: 4;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comment-summary-view .stars-view {
+    flex: 6;
+    color: #ffb238;
+    font-size: 12px;
+    font-family: PingFangSC;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.comment-summary-view .star-view {
+    width: 23rpx;
+    height: 22rpx;
+    margin-left: 4rpx;
+}
+
+.comment-summary-view .score-text {
+    margin-left: 20rpx;
+    width: 36rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

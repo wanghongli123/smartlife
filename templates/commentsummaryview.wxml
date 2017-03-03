@@ -1,0 +1,37 @@
+<!--店铺详情页面
+综合评价view
+score:
+description:
+options: []
+-->
+
+<template name="commentsummaryview">
+    <view class="comment-summary-view">
+        <view class="line-view"></view>
+        <view class="middle-view">
+            <view class="left-view">
+                <view class="score-view">
+                    <image src="../../resources/icon_star_big.png"></image>
+                    {{score}}
+                </view>
+                <view>综合评分</view>
+                <view class="person-view">{{persons}}</view>
+            </view>
+            <view class="seperation-view"></view>
+            <view class="right-view">
+                <block wx:for="{{otherScores}}" wx:key="*this">
+                    <view class="item-score-view">
+                        <view class="name-view">{{item.name}}</view>
+                        <view class="stars-view">
+                            <block wx:for="{{[1,2,3,4,5]}}" wx:key="*this" wx:for-item="score">
+                                <image src="{{score <= item.score ? '../../resources/icon_star.png':(score <= item.score + 0.5 ?'../../resources/icon_half-star.png': '../../resources/icon_empty-star.png')}}" class="star-view"></image>
+                            </block>
+                            <view class="score-text">{{item.score}}</view>
+                        </view>
+                    </view>
+                </block>
+            </view>
+        </view>
+        <view class="line-view"></view>
+    </view>
+</template>

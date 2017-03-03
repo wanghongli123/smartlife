@@ -1,0 +1,45 @@
+<view class="container">
+    <view class="content-view view-allscreen">
+        <!--第一期不上-->
+        <!--<view class="nav-view {{metaKeys ? '' : 'view-disappear'}}">
+            <block wx:for="{{metaKeys}}" wx:for-item="metaKey" wx:key="*this">
+                <view class="navitem-view" bindtap="clickSelectMeta" data-metaKey="{{metaKey}}" data-index="{{index}}">
+                    <view class="nav-item {{selectedMetaIndex == index ? 'active' : ''}}">{{metaKey}}</view>
+                    <view class="nav-icon {{selectedMetaIndex == index ? 'active' : ''}}"></view>
+                </view>
+            </block>
+        </view>
+        <view class="options-view {{showOptions ? 'slidown' : 'slidup'}}">
+            <block wx:for="{{metaValues}}" wx:for-item="values" wx:key="*this">
+                <view class="view-allscreen option-items-view {{(metaValues.length==2?'option-items-view':'option-items-allview')+index}}" style="max-height: {{optionItemsViewMaxHeight}}px;">
+                    <block wx:for="{{values}}" wx:for-item="value" wx:key="*this">
+                        <view class="option-item-view {{selectedMetaItemIndex == index ? 'active' : ''}}" bindtap="clickOnOptionItemView">{{value}}</view>
+                    </block>
+                </view>
+            </block>
+        </view>
+        <view catchtap="clickOnOptionsBgView" class="options-bg view-allscreen {{showOptions ? 'options-bg-show' : 'options-bg-hide'}}">
+        </view>
+        
+        <view class="top-padding-view"></view>-->
+
+        <!--shopcell-->
+        <import src="../../templates/shopcell"/>
+        <block wx:for="{{shops}}" wx:for-item="shop" wx:key="*this">
+            <template is="shopcell" data="{{...shop, canCollect: true, nameFontSize: 14, seperator: true, index}}"/>
+        </block>
+
+        <!--加载更多-->
+        <block wx:if="{{shops.length>0}}">
+            <import src="../../templates/loadingmorecell"/>
+            <template is="loadingmorecell" data="{{hasMore}}"/>
+        </block>
+    </view>
+    <!--我的按钮-->
+    <view class="me-view view-itemscenter" bindtap="clickOnMeView">
+        <image class="icon_me" mode="aspectFill" src="../../resources/icon_user.png"></image>
+    </view>
+    <!--无数据提示页面-->
+    <import src="../../templates/placeholderview"/>
+    <template is="placeholderview" data="{{pagestate: pageState}}"/>
+</view>

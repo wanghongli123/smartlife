@@ -1,0 +1,15 @@
+<!--通用打分控件，评价页面的具体评分项控件-->
+
+<template name="commonscoreview">
+    <view class="common-score-view">
+        <view class="left-view">
+            {{title}}
+            <view class="stars-view">
+                <block wx:for="{{[1,2,3,4,5]}}" wx:key="*this">
+                    <image mode="scaleToFill" bindtap="clickOnScoreView" data-key="{{key}}" data-score="{{item}}" src="{{item <= score ? '../../resources/icon_star_big.png':'../../resources/icon_empty-star-big.png'}}" class="star-view"></image>
+                </block>
+            </view>
+        </view>
+        <view class="right-view {{score>0?'score-color':'normal-color'}}">{{scoreLabel}}</view>
+    </view>
+</template>

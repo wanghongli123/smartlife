@@ -1,0 +1,47 @@
+.comment-tags-view {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    padding-top: 20rpx;
+}
+
+.comment-tags-view .tag-view {
+    padding: 0 27rpx;
+    max-width: 200rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.comment-tags-view .selected {
+    color: #ff4466;
+    border: solid 1px #ff4466;
+    background-color: white;
+}   
+
+.comment-tags-view .normal {
+    color: #606567;
+    border: solid 1px #979797;
+    background-color: white;
+}
+
+.comment-tags-view .dismiss {
+    color: #d6d8d8;
+    border: solid 1px #d9dbdc;
+    background-color: f8f8f8;
+}
+
+.comment-tags-view .show-more-view {
+    width: 56rpx;
+}
+
+.comment-tags-view view {
+    height: 56rpx;
+    border-radius: 28rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-family: PingFangSC;
+    font-size: 13px;
+    margin: 0 10rpx 20rpx 10rpx;
+}

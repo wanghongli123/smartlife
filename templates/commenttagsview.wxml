@@ -1,0 +1,10 @@
+<!--评论页面，tag选择控件-->
+
+<template name="commenttagsview">
+    <view class="comment-tags-view">
+        <block wx:for="{{tags}}" wx:for-item="tag" wx:key="*this">
+            <view data-index="{{index}}" class="tag-view {{tag.isSelected?'selected':(tagEnable?'normal':'dismiss')}}" catchtap="clickOnShopTagView">{{tag.name}}</view>
+        </block>
+        <view wx:if="{{showAddingMoreTag}}" class="show-more-view normal" catchtap="clickOnShowMoreTagsView">+</view>
+    </view>
+</template>

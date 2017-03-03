@@ -1,0 +1,33 @@
+<view class="container">
+    <!--背景图片-->
+    <image class="bg-view" src="../../resources/shopcomment-bg.jpg"></image>
+
+    <view class="content-view">
+        <!--详情卡片页面-->
+        <block wx:if="{{shopComment}}">
+            <import src="../../templates/shopcommentcard"/>
+            <template is="shopcommentcard" data="{{...shopComment}}"/>
+        </block>
+
+        <!--服务提供商-->
+        <block wx:if="{{shopInfo}}">
+            <import src="../../templates/shopcell"/>
+            <view class="merchant-view">
+                服务提供商
+                <view class="seperator-line"></view>
+                <template is="shopcell" data="{{...shopInfo, canCollect: true, nameFontSize: 14, seperator: false}}"/>
+            </view>
+        </block>
+
+        <!--推荐店铺-->
+        <!--<view wx:if="{{hasRecomandShops}}" class="recommand-view">
+            <view class="title-view">周边人气店铺</view>
+            <block wx:for="{{recomandShops}}" wx:key="*this">
+                <template is="shopcell" data="{{...shop, canCollect: true, nameFontSize: 14, seperator: true}}"/>
+            </block>
+        </view>-->
+    </view>
+
+    <import src="../../templates/placeholderview"/>
+    <template is="placeholderview" data="{{pagestate: pageState}}"/>
+</view>

@@ -14,8 +14,7 @@ clickOnPlaceholderView-->
         <image src="../../resources/icon_loading.gif" class="loading-image"></image>
     </block>
     <block wx:elif="{{pagestate==2}}">
-        <image wx:if="{{image&&image.length}}" class="error-image" src="{{image}}"></image>
-        加载数据出错
+        <image class="error-image" src="../../resources/icon_network_error.png"></image>
         <view class="reload-view" bindtap="clickOnPlacehoderView">点击重新加载</view>
     </block>
     <block wx:else>

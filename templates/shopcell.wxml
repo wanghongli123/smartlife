@@ -3,7 +3,7 @@
 avatar: 店铺头像链接
 name: 店铺名称
 addr: 地址
-isCollected: 是否已经收藏
+collected: 是否已经收藏
 service: 服务名称
 tags：[tag,tag] 标签地址，比如人气，超赞等
 scores: 评分
@@ -34,9 +34,9 @@ index: 当前的索引
                     </view>
                 </view>
             </view>
-            <view wx:if="{{canCollect}}" class="operation-view" style="color:{{isCollected?'lightgray':'#444444'}};" catchtap="clickOnCollectionView" data-index="{{index}}">
-                <image class="icon-collection" src="{{isCollected?'../../resources/icon_favorite.png':'../../resources/icon_favorite.png'}}" mode="aspectFill"></image>
-                {{isCollected?'已收藏':'收藏'}}
+            <view wx:if="{{canCollect}}" class="operation-view" style="color:{{collected?'lightgray':'#444444'}};" catchtap="clickOnCollectionView" data-index="{{index}}">
+                <image class="icon-collection" src="{{collected?'../../resources/icon_favorite.png':'../../resources/icon_favorite.png'}}" mode="aspectFill"></image>
+                {{collected?'已收藏':'收藏'}}
             </view>
         </view>
         <view class="other-info-view">

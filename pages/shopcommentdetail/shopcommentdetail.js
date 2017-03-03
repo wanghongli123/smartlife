@@ -26,50 +26,17 @@ Page({
       })
     }
   },
-  onReady:function(){
-    // 生命周期函数--监听页面初次渲染完成
-  },
-  onShow:function(){
-    // 生命周期函数--监听页面显示
-  },
-  onHide:function(){
-    // 生命周期函数--监听页面隐藏
-  },
-  onUnload:function(){
-    // 生命周期函数--监听页面卸载
-  },
-  onPullDownRefresh: function() {
-    // 页面相关事件处理函数--监听用户下拉动作
-  },
-  onReachBottom: function() {
-    // 页面上拉触底事件的处理函数
-  },
   onShareAppMessage: function() {
     // 用户点击右上角分享
     return {
-      title: 'title', // 分享标题
-      desc: 'desc', // 分享描述
-      path: 'path' // 分享路径
+      title: this.data.shopInfo.name, // 分享标题
+      desc: '', // 分享描述
+      path: '/pages/shopcommentdetail/shopcommentdetail?shopId='+this.customerData.shopId+'&commentId'+this.customerData.commentId
     }
   },
   ///////////////////////////////////////////view events///////////////////////////////////////////
-  clickOnPlacehoderView: function() {
-      
-  },
-  clickOnCollectionView: function() {
-    wx.showModal({
-      title: '温馨提示',
-      content: '是否取消收藏',
-      success: function(res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        }
-      }
-    })
-  },
   clickOnFavoriteView: function() {
     //对评论点赞
-
   },
   clickOnCommentPhotoView: function(e) {
     this.clickOnCommentMorePhotosView()
@@ -84,16 +51,8 @@ Page({
       return
     }
 
-    var index = e.currentTarget.dataset.index
-    var shops = this.data.shops
-    if (index >= shops.length) {
-      return
-    }
-
-    var shopInfo = this.data.shops[index]
-    if (shopInfo.isCollected) {
-      //取消收藏
-      //取消收藏
+    var shopInfo = this.data.shopInfo
+    if (shopInfo.collected) {
       var that = this
       wx.showModal({
         title: '温馨提示',
@@ -118,7 +77,7 @@ Page({
   /////////////////////////////////////////////private events//////////////////////////////////////
   viewDidLoad: function(options) {
     this.customerData.shopId = options['shopId']
-    this.customerData.commentId = 1// options['commentid']
+    this.customerData.commentId = options['commentid']
 
     var shopComment = app.globalData.shopComment
     if (shopComment) {
@@ -131,7 +90,7 @@ Page({
       this.loadShopCommentInfo()
     }
 
-    // this.loadShopInfo()
+    this.loadShopInfo()
   },
   loadShopInfo: function() {
     var that = this

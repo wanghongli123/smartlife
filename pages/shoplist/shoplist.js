@@ -2,9 +2,6 @@
 //根据返回的数据，决定最多支持三个级别.
 
 var app = getApp()
-const kPageSize = 30
-const kMEURL = '../me/me'
-var aliasNm = 'shoplist'
 var shareConfig = require('../../utils/shareconfig.js')
 var shopManager = require('../../apimanagers/shopmanager.js')
 
@@ -36,27 +33,12 @@ Page({
       })
     }
 
-    let windowHeight = app.getSystemInfo(function(res) {
+    app.getSystemInfo(function(res) {
       that.setData({
         windowHeight: res.windowHeight,
         optionItemsViewMaxHeight: res.windowHeight * 0.6
       })
     })
-  },
-  onReady: function() {
-    // 生命周期函数--监听页面初次渲染完成
-  },
-  onShow: function() {
-    // 生命周期函数--监听页面显示
-  },
-  onHide: function() {
-    // 生命周期函数--监听页面隐藏
-  },
-  onUnload: function() {
-    // 生命周期函数--监听页面卸载
-  },
-  onPullDownRefresh: function() {
-    // 页面相关事件处理函数--监听用户下拉动作
   },
   onReachBottom: function() {
     // 页面上拉触底事件的处理函数
@@ -66,7 +48,7 @@ Page({
     this.loadShopsWithParams()
   },
   onShareAppMessage: function() {
-      return shareConfig.getPageShareInfo(aliasNm)
+      return shareConfig.getPageShareInfo('shoplist')
     // 用户点击右上角分享
   },
   ///////////////////////////////////////////////view events///////////////////////////////////////
@@ -111,7 +93,7 @@ Page({
   //跳转的页面.
   clickOnMeView: function() {
     wx.navigateTo({
-      url: kMEURL
+      url: '../me/me'
     })
   },
   clickOnShopCell: function(e) {
@@ -121,7 +103,7 @@ Page({
       return
     }
 
-    var shopInfo = this.data.shops[index]
+    var shopInfo = shops[index]
     app.globalData.shopInfo = shopInfo
     wx.navigateTo({
       url: '../shopdetail/shopdetail?shopId=' + shopInfo.id 
@@ -138,10 +120,8 @@ Page({
       return
     }
 
-    var shopInfo = this.data.shops[index]
-    if (shopInfo.isCollected) {
-      //取消收藏
-      //取消收藏
+    var shopInfo = shops[index]
+    if (shopInfo.collected) {
       var that = this
       wx.showModal({
         title: '温馨提示',
@@ -192,8 +172,8 @@ Page({
     shops = shops.concat(res.data)
     var hasMore = res.total > shops.length
     this.setData({
-      shops: shops,
-      hasMore: hasMore
+      hasMore: hasMore,
+      shops: shops || []
     })
 
     if (hasMore) {
@@ -206,12 +186,15 @@ Page({
   },
   loadShopsFailed: function(er) {
     this.showLoadingView(er||'加载数据出错')
+    this.setData({
+      pageState: 2
+    })
   },
   collectShop: function(shopId) {
     this.customerData.isInNetworking = true
     this.showLoadingView('收藏中...')
     var that = this
-    shopManager.collectShopWithParams({shopId: shopId, params: {}, success: function() {
+    shopManager.collectShopWithParams({shopId: shopId, success: function() {
       wx.hideToast()
       that.updateShopCollectInfo(shopId, true)
     }, fail: function(er) {
@@ -228,7 +211,7 @@ Page({
 
     var that = this
     this.showLoadingView('取消收藏中...')
-    shopManager.unCollectShopWithParams({shopId: shopId, params: {}, success: function(){
+    shopManager.unCollectShopWithParams({shopId: shopId, success: function(){
       wx.hideToast()
       that.updateShopCollectInfo(shopId, false)
     }, fail: function(er) {
@@ -246,7 +229,7 @@ Page({
     for (let i = 0; i < shops.length; i++) {
       let shop = shops[i];
       if (shop.id == shopId) {
-        shop.isCollected = isCollected
+        shop.collected = isCollected
         hasShop = true
         break;
       }

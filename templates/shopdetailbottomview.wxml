@@ -10,8 +10,8 @@ collectionInfo: 收藏的人数情况-->
             我的
         </view>
         <view class="collection-view" catchtap="clickOnCollectionView">
-            <image class="icon_collection" src="../../resources/icon_favorite.png"></image>
-            <text>收藏</text>
+            <image class="icon_collection" src="{{collected?'../../resources/icon_favorite.png':'../../resources/icon_favorite.png'}}"></image>
+            <text>{{collected?'收藏':'已收藏'}}</text>
             <text class="collectioninfo-text">{{collectionInfo}}</text>
         </view>
         <view class="telphone-view" catchtap="clickOnTelphoneView">

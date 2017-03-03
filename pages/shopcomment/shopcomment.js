@@ -1,13 +1,8 @@
 //店铺评论、点赞页面.
-
 var app = getApp()
 var config = require('../../config.js')
 var appManager = require('../../apimanagers/appmanager.js')
 var shopManager = require('../../apimanagers/shopmanager.js')
-// const config.kMaxCommentSelectedTagCount = config.kMaxCommentSelectedTagCount
-// const kInputLimit = config.kMaxCommentInputCount
-// const kShowedTagLimit = config.kMaxCommentLimitShowedTagCount
-// const kScoreLabels = config.kCommentScoreLabels
 
 Page({
   data:{
@@ -50,33 +45,6 @@ Page({
       })
     }
   },
-  onReady:function(){
-    // 生命周期函数--监听页面初次渲染完成
-  },
-  onShow:function(){
-    // 生命周期函数--监听页面显示
-  },
-  onHide:function(){
-    // 生命周期函数--监听页面隐藏
-  },
-  onUnload:function(){
-    // 生命周期函数--监听页面卸载
-  },
-  onPullDownRefresh: function() {
-    // 页面相关事件处理函数--监听用户下拉动作
-  },
-  onReachBottom: function() {
-    // 页面上拉触底事件的处理函数
-  },
-  onShareAppMessage: function() {
-    // 用户点击右上角分享
-    return {
-      title: 'title', // 分享标题
-      desc: 'desc', // 分享描述
-      path: 'path' // 分享路径
-    }
-  },
-  
   ///////////////////////////////////////////view events////////////////////////////////////////
   clickOnDeleteImageView: function(e) {
     var index = e.currentTarget.dataset.index
@@ -101,12 +69,6 @@ Page({
           canAddingMorePhotos: images.length < config.kMaxCommentImageCount
         })
       },
-      fail: function() {
-        // fail
-      },
-      complete: function() {
-        // complete
-      }
     })
   },
   clickOnCommentInputView: function() {
@@ -123,6 +85,9 @@ Page({
   },
   clickOnShowMoreTagsView: function() {
     //点击显示更多的可选评价.
+    this.setData({
+      tags: this.customerData.tags
+    })
   },
   clickOnScoreView: function(e) {
     //点击在综合评分上
@@ -217,7 +182,7 @@ Page({
 
     this.setData({
       tags: tags,
-      tagEnable: selectedTagC < 3 
+      tagEnable: selectedTagC < config.kMaxCommentSelectedTagCount
     })
 
     this.updatePostintViewEnable()
@@ -311,7 +276,7 @@ Page({
     shopManager.commentShopWithParams({params: params, success: function(res) {
       that.showLoadingView('发布成功!')
       setTimeout(function() {
-        that.gotoShopCommentDetailView(res.commentId)
+        that.gotoShopCommentDetailView(that.customerData.shopId, res.commentId)
       }, 2000)
     }, fail: function(){
       that.showLoadingView('发布失败!')
@@ -329,9 +294,9 @@ Page({
       duration: 1000000
     })
   },
-  gotoShopCommentDetailView: function(commentId) {
-    wx.navigateTo({
-      url: '../shopcommentdetail/shopcommentdetail?commentId=' + commentId
+  gotoShopCommentDetailView: function(shopId, commentId) {
+    wx.redirectTo({
+      url: '../shopcommentdetail/shopcommentdetail?shopId=?' + shopId + '&commentId=' + commentId
     })
   },
   updatePostintViewEnable: function() {

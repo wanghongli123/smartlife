@@ -25,45 +25,18 @@ Page({
       })
     }
   },
-  onReady:function(){
-    // 生命周期函数--监听页面初次渲染完成
-  },
-  onShow:function(){
-    // 生命周期函数--监听页面显示
-  },
-  onHide:function(){
-    // 生命周期函数--监听页面隐藏
-  },
-  onUnload:function(){
-    // 生命周期函数--监听页面卸载
-  },
-  onPullDownRefresh: function() {
-    // 页面相关事件处理函数--监听用户下拉动作
-  },
-  onReachBottom: function() {
-    // 页面上拉触底事件的处理函数
-  },
   onShareAppMessage: function() {
     // 用户点击右上角分享
     return {
-      title: 'title', // 分享标题
-      desc: 'desc', // 分享描述
-      path: 'path' // 分享路径
+      title: this.data.shop.name, // 分享标题
+      desc: '店铺详情', // 分享描述
+      path: '/page/shopDetail?shopId=' +  this.customerData.shopId// 分享路径
     }
   },
   ///////////////////////////////////////////////view events///////////////////////////////////////
   clickOnMeView: function() {
     wx.navigateTo({
-      url: '../me/me',
-      success: function(res){
-        // success
-      },
-      fail: function() {
-        // fail
-      },
-      complete: function() {
-        // complete
-      }
+      url: '../me/me'
     })
   },
   clickOnCollectionView: function() {
@@ -94,16 +67,12 @@ Page({
     if (!phone) {
       return
     }
-
     wx.makePhoneCall({
-      phoneNumber: phone,
-      success: function(res) {
-        // success
-      }
+      phoneNumber: phone
     })
   },
   clickOnOptionView: function(e) {
-    var viewId = 'view-' + e.currentTarget.dataset.index;
+    var viewId = 'view-' + e.currentTarget.dataset.index
     console.log(viewId)
     this.setData({
       scrollIntoView: viewId
@@ -111,16 +80,7 @@ Page({
   },
   clickOnCommentsView: function(e) {
     wx.navigateTo({
-      url: '../shopcommentdetail/shopcommentdetail',
-      success: function(res){
-        // success
-      },
-      fail: function() {
-        // fail
-      },
-      complete: function() {
-        // complete
-      }
+      url: '../shopcommentlist/shopcommentlist?shopId='+this.customerData.shopId
     })
   },
   clickShowShopDesc: function() {
@@ -189,11 +149,9 @@ Page({
       that.updateShopCollectedInfo(true)
     }, fail: function() {
       that.showLoadingView('收藏店铺出错')
-      setTimeout(function() {
-        wx.hideToast()
-      }, 2000)
       that.updateShopCollectedInfo(true)
     }, complete: function() {
+      wx.hideToast()
       that.customerData.isInNetworking = false
     }})
   },
@@ -206,11 +164,9 @@ Page({
       that.updateShopCollectedInfo(false)
     }, fail: function() {
       that.showLoadingView('取消收藏出错')
-      setTimeout(function() {
-        wx.hideToast()
-      }, 2000)
     }, complete: function(){
       setTimeout(function() {
+        wx.hideToast()
         that.customerData.isInNetworking = false
       }, 2000)
     }})

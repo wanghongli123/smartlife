@@ -9,7 +9,7 @@ pagestate: 0:加载数据中, 1:成功加载数据, 2:加载数据出错, 3: 无
 clickOnPlaceholderView-->
 
 <template name="placeholderview">
-<view class="placeholder-view {{pagestate==1?'view-disappear':''}}">
+<view class="placeholder-view" wx:if="{{pagestate!=1}}">
     <block wx:if="{{pagestate==0}}">
         <image src="../../resources/icon_loading.gif" class="loading-image"></image>
     </block>

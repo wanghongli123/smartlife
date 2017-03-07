@@ -8,20 +8,20 @@ Page({
       tabNames: [],
       tabIndex: 0,
       templatePath: null,
-      templateName: null
+      templateName: null,
+      pagestate: 0,
+      shops: []
   },
   customerData: {
       tabItems: [
           {
               name: '我的收藏',
-              cellName: '',
-              cellPath: '',
+              shops: [],
               pageNo: 0
           },
           {
               name: '我的点赞',
-              cellName: '',
-              cellPath: '',
+              shops: [],
               pageNo: 0
           }
       ],
@@ -71,7 +71,7 @@ Page({
       path: 'path' // 分享路径
     }
   },
-  /////////////////////////////////页面事件////////////////////////////////////////////////////////////
+  /////////////////////////////////view events/////////////////////////////////////////////////////
   clickOnTabitemView: function(e) {
       this.setData({
         tabIndex: e.currentTarget.dataset.tabindex
@@ -82,7 +82,7 @@ Page({
   clickOnShopCell: function(e) {
       console.log(e);
   },
-  ////////////////////////////////数据相关/////////////////////////////////////////////////////////////
+  ////////////////////////////////private events///////////////////////////////////////////////////
   loadShopsWithParams: function() {
   },
   resetLoadingShopParams: function() {

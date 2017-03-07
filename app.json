@@ -1,6 +1,6 @@
 {
   "pages":[
-    "pages/shopcommentlist/shopcommentlist"
+    "pages/me/me"
   ],
   "window":{
     "backgroundTextStyle":"light",

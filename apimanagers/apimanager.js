@@ -76,9 +76,7 @@ function request({url='', params={}, method='GET', success=null, fail=null, comp
       success: function(res){
         // success
         console.log("request url successed:" + url)
-        console.log(res)
-        // && res.data && res.data.code == 0
-        if (res && res.statusCode == 200) {
+        if (res && res.statusCode == 200 && res.data && res.data.code == 0) {
             (typeof success == 'function') && success(res.data.data)
         } else {
             typeof fail == 'function' && fail('发生错误')

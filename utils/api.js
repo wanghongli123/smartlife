@@ -7,33 +7,34 @@ function lkkUploadImageConfigUrl() {
 }
 
 function host() {
-    return 'http://crmtest.baixing.com.cn'
+    return 'http://localhost:8888';//'http://crmtest.baixing.com.cn'
 }
 
 function userLoginUrl() {
-    return host() + '/judy/wxa/comment?debug=0532'
+    return host() + '/wxa/login';///judy/wxa/comment?debug=0532'
 }
 
 function shopListUrl() {
-    return host() + '/judy/wxa/shop'
+    return host() + '/wxa/shop'
 }
 
 function shopDetailUrl(shopId) {
-    return host() + "/judy/wxa/shop/" + shopId
+    return host() + "/wxa/shop/" + shopId
 }
 
 //评论店铺url
 function commentShopUrl(shopId) {
-    return host() + '/judy/wxa/shop/' + shopId+ '/comment'
+    return host() + '/wxa/shop/' + shopId+ '/comment'
 }
 
 //店铺评论url
 function shopCommentsUrl(shopId) {
-    return host() + '/judy/wxa/shop/'+shopId+'/comment'
+    return host() + '/wxa/shop/'+shopId+'/comment'
 }
 
+//店铺详情
 function shopCommentDetailUrl(commentId) {
-    return host() + '/judy/wxa/comment/' + commentId
+    return host() + '/wxa/comment/' + commentId
 }
 
 //获取店铺评论的配置url
@@ -48,26 +49,27 @@ function userCollectedShopsUrl(userId) {
 
 //用户收藏店铺url
 function userCollectShopUrl(shopId) {
-    return host() + '/judy/wxa/shop/'+ shopId + '/collect'
+    return host() + '/wxa/shop/'+ shopId + '/collect'
 }
 
 //取消收藏店铺url
 function userUnCollectShopUrl(shopId) {
-    return host() + '/judy/wxa/collection/shop/'+ shopId + '/cancel'
+    return host() + '/wxa/collection/shop/'+ shopId + '/cancel'
 }
 
 //评论tag
 function getShopCommentTagsUrl() {
-    return host() + '/judy/wxa/meta/tag'
+    return host() + '/wxa/meta/tag'
 }
 
 //获取上传图片的config
 function getUploadImageConfigUrl() {
-    return 
+    return lkkHost() + '/api/config.getImgConfig'
 }
 
 module.exports = {
     host: host,
+    lkkHost: lkkHost,
     userLoginUrl: userLoginUrl,
     shopListUrl: shopListUrl,
     shopDetailUrl: shopDetailUrl,
@@ -78,5 +80,6 @@ module.exports = {
     userCollectedShopsUrl: userCollectedShopsUrl,
     userCollectShopUrl: userCollectShopUrl,
     userUnCollectShopUrl: userUnCollectShopUrl,
-    getShopCommentTagsUrl: getShopCommentTagsUrl
+    getShopCommentTagsUrl: getShopCommentTagsUrl,
+    getUploadImageConfigUrl: getUploadImageConfigUrl
 }

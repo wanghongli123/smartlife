@@ -1,30 +1,32 @@
+const kQQKAPIClientKey = "api_wxapplekongkong"
 const kQQKAPIClientSecret = "ed6a36bd83f58b68a62a40ebb1f6a210"
-const kUDID = "d33d2fce6c1748beb102dd7abb7f8cef"
 const kQQKAPIHost = "api_wxapplekongkong"
+const kUDID = "d33d2fce6c1748beb102dd7abb7f8cef"
 const kUSERTOKEN = ""
 
-var config = require("../config.js")
 var util = require("../utils/util.js")
+var config = require("../config.js")
+var api = require('../utils/api.js')
 
-function lkkApiHash(url) {
-    var host = config.lkkHost
+function apiHash(url) {
+    var host = api.lkkHost()
     var querys = (typeof url == 'string') && url.split(host)
     var url_ = querys && querys.pop()
     var plain = kUDID + kUSERTOKEN + url_ + kQQKAPIClientSecret + kUDID
     return util.MD5(plain)
 }
 
-function lkkHeader(url) {
+function header(url) {
     return {
         "BAPI-APP-KEY": kQQKAPIHost,
         "UDID": kUDID,
         "APP_VERSION": config.appVersion,
-        "BAPI-HASH": lkkApiHash(url),
+        "BAPI-HASH": apiHash(url),
         "BAPI-NONCE": kUDID
     }
 }
 
-function lkkFullUrl(url, data) {
+function fullUrl(url, data) {
     var isFirstObj = true
     var url_ = url
     for (var key in data) {
@@ -38,26 +40,27 @@ function lkkFullUrl(url, data) {
     return url_
 }
 
-function lkkRequest({url='', params={}, method='GET', success=null, fail=null, complete=null}) {
-    var lkkFullUrlString = lkkFullUrl(url, params) || ''
-    var header = lkkHeader(lkkFullUrlString) || {}
+function lkkRequest({url, data, method, success, fail, complete}) {
+    var fullUrlString = fullUrl(url, data)
+    console.log("request url:" + fullUrlString)
     wx.request({
-      url: lkkFullUrlString,
-      method: method || 'GET', 
-      header: header,
+      url: fullUrlString,
+      data: {},
+      method: method, 
+      header: header(fullUrlString), // 设置请求的 header
       success: function(res){
         // success
-        console.log("request url successed:" + lkkFullUrlString)
+        console.log("request url successed:" + fullUrlString)
         console.log(res)
         if (res && res.statusCode == 200) {
-            (typeof success == 'function') && success(res)
+            (typeof success == 'function') && success(res.data)
         } else {
             typeof fail == 'function' && fail('发生错误')
         }
       },
       fail: function() {
         // fail
-        console.log("request url faild" + lkkFullUrlString)
+        console.log("request url faild" + fullUrlString)
         typeof fail == 'function' && fail('发生错误')
       },
       complete: function() {
@@ -69,23 +72,25 @@ function lkkRequest({url='', params={}, method='GET', success=null, fail=null, c
 }
 
 function request({url='', params={}, method='GET', success=null, fail=null, complete=null}) {
+    var uid = wx.getStorageSync('login_token')
     wx.request({
       url: url || '',
       data: params || {},
       method: method || 'GET',
+      header: {'token': uid},
       success: function(res){
         // success
         console.log("request url successed:" + url)
         if (res && res.statusCode == 200 && res.data && res.data.code == 0) {
             (typeof success == 'function') && success(res.data.data)
         } else {
-            typeof fail == 'function' && fail('发生错误')
+            typeof fail == 'function' && fail(res.data.msg || '发生错误')
         }
       },
       fail: function() {
         // fail
         console.log("request url faild" + url)
-        typeof fail == 'function' && fail('发生错误')
+        typeof fail == 'function' && fail(res.data.msg  || '发生错误')
       },
       complete: function() {
         // complete

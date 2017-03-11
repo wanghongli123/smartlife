@@ -1,6 +1,7 @@
 //店铺评论、点赞页面.
 var app = getApp()
 var config = require('../../config.js')
+var util = require('../../utils/util.js')
 var appManager = require('../../apimanagers/appmanager.js')
 var shopManager = require('../../apimanagers/shopmanager.js')
 
@@ -31,29 +32,51 @@ Page({
     tags: [],
     shopId: '',
     serviceId: '',
-    uploadImageKeys: [],
+    uploadedImageUrls: [],
     isInNetworking: false,
   },
   onLoad:function(options){
     // 生命周期函数--监听页面加载
-    if (app.globalData.loginSuccessed) {
-      this.viewDidLoad(options)
-    } else {
-      var that = this
-      app.login(function() {
+    var that = this
+    setTimeout(function() {
+      if (app.globalData.loginSuccessed) {
         that.viewDidLoad(options)
-      })
-    }
+      } else {
+        app.login(function() {
+          that.viewDidLoad(options)
+        })
+      }
+    }, 500)
   },
   ///////////////////////////////////////////view events////////////////////////////////////////
   clickOnDeleteImageView: function(e) {
     var index = e.currentTarget.dataset.index
     var images = this.data.images
+    if (images.length <= index) {
+      return
+    }
+
+    util.arrayRemoteAt(images, index)
+    this.setData({
+      images: images
+    })
+  },
+  clickOnPhotoView: function(e) {
+    var images = this.data.images
+    var index = e.currentTarget.dataset.index
+    if (images.length <= index) {
+      return
+    }
+
+    wx.previewImage({
+      current: this.data.images[index],
+      urls: this.data.images,
+    })
   },
   clickOnAddingImageView: function() {
     var that = this
     wx.chooseImage({
-      count: config.kMaxCommentImageCount - this.images.count, // 最多可以选择的图片张数，默认9
+      count: config.kMaxCommentImageCount - this.data.images.count, // 最多可以选择的图片张数，默认9
       sizeType: ['compressed'], // original 原图，compressed 压缩图，默认二者都有
       sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机，默认二者都有
       success: function(res){
@@ -85,8 +108,12 @@ Page({
   },
   clickOnShowMoreTagsView: function() {
     //点击显示更多的可选评价.
+    var tags = this.data.tags
+    var hideTags = this.customerData.tags.slice(config.kMaxCommentLimitShowedTagCount, this.customerData.length)
+    tags = tags.concat(hideTags)
     this.setData({
-      tags: this.customerData.tags
+      tags: tags,
+      showAddingMoreTag: false
     })
   },
   clickOnScoreView: function(e) {
@@ -98,11 +125,11 @@ Page({
 
     switch(key) {
       case 'totalScore': {
-        this.updatePostintViewEnable()
         this.setData({
           totalScoreLabel: config.kCommentScoreLabels[e.currentTarget.dataset.score],
           totalScore: e.currentTarget.dataset.score
         })
+        this.updatePostintViewEnable()
         break;
       }
       case 'pinzhiScore': {
@@ -201,8 +228,8 @@ Page({
   },
   ////////////////////////////////////////////private events///////////////////////////////////////
   viewDidLoad: function(options) {
-    this.customerData.shopId = options['shopId']
-    this.customerData.serviceId = options['serviceId']
+    this.customerData.shopId = 51//options['shopId']
+    this.customerData.serviceId = 1//options['category_id']
 
     var that = this
     app.loadShopCommentTags(function(tags) {
@@ -213,7 +240,7 @@ Page({
       that.customerData.tags = tags
     })
 
-    shopManager.loadShopDetailWithParams({shopId: '1', success: function(shopInfo) {
+    shopManager.loadShopDetailWithParams({shopId: this.customerData.shopId, success: function(shopInfo) {
       that.setData({
         pageState: 1,
         shopInfo: shopInfo
@@ -242,16 +269,16 @@ Page({
   },
   uploadImages: function() { 
     //已经全部上传完，可以上传具体的评论内容.
-    if (this.customerData.uploadedImageKeys.length == this.data.images.length) {
+    if (this.data.images.length == 0 || this.customerData.uploadedImageUrls.length == this.data.images.length) {
       this.postShopComment()
     } else {
       var that = this
-      var image = this.data.images[this.customerData.uploadedImageKeys.length]
-      appManager.uploadImage({filePath: image, success: function(imageKey) {
-        that.customerData.uploadedImageKeys.push(imageKey)
-        that.uploadImages
+      var image = this.data.images[this.customerData.uploadedImageUrls.length]
+      appManager.uploadImage({filePath: image, success: function(image) {
+        that.customerData.uploadedImageUrls.push(image.url)
+        that.uploadImages()
       }, fail: function(er) {
-        that.customerData.uploadedImageKeys = []
+        that.customerData.uploadedImageUrls = []
         that.showLoadingView(er || '上传图片发生错误，请检查网络...')
         setTimeout(function() {
           wx.hideToast()
@@ -263,7 +290,7 @@ Page({
     var params = {
       attitude_score: this.data.taiduScore,
       category_id: this.customerData.serviceId,
-      images: this.customerData.uploadImageKeys,
+      images: this.customerData.uploadedImageUrls,
       overall_score: this.data.totalScore,
       quality_score: this.data.pinzhiScore,
       speed_score: this.data.suduScore,
@@ -273,10 +300,10 @@ Page({
       id: this.customerData.shopId
     }
     var that = this
-    shopManager.commentShopWithParams({params: params, success: function(res) {
+    shopManager.commentShopWithParams({shopId:this.customerData.shopId, params: params, success: function(res) {
       that.showLoadingView('发布成功!')
       setTimeout(function() {
-        that.gotoShopCommentDetailView(that.customerData.shopId, res.commentId)
+        that.gotoShopCommentDetailView(that.data.shopInfo, res)
       }, 2000)
     }, fail: function(){
       that.showLoadingView('发布失败!')
@@ -294,9 +321,12 @@ Page({
       duration: 1000000
     })
   },
-  gotoShopCommentDetailView: function(shopId, commentId) {
+  gotoShopCommentDetailView: function(shop, comment) {
+    app.globalData.shop = shop
+    app.globalData.shopComment = comment
+    var url = '../shopcommentdetail/shopcommentdetail?shopId=' + shop.id + '&commentId=' + comment.id
     wx.redirectTo({
-      url: '../shopcommentdetail/shopcommentdetail?shopId=?' + shopId + '&commentId=' + commentId
+      url: url
     })
   },
   updatePostintViewEnable: function() {

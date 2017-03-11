@@ -1,4 +1,5 @@
 
+var app = getApp();
 var shopManager = require('../../apimanagers/shopmanager.js')
 
 Page({
@@ -8,26 +9,60 @@ Page({
     hasMore: false
   },
   customerData: {
-    page: 0,
+    page: 1,
     shopId: '',
     isInNetworking: false
   },
   onLoad:function(options){
     // 生命周期函数--监听页面加载
-    this.customerData.shopId = options['shopId'] || 1
-    this.loadComments()
+    var that = this
+    setTimeout(function() {
+      that.customerData.shopId = options['shopId']
+      that.loadComments()
+    }, 500)
   },
   onReachBottom: function() {
     // 页面上拉触底事件的处理函数
     this.loadComments()
   },
   /////////////////////////////////////////////view events/////////////////////////////////////////
-  clickOnShopCommentView: function(e) {
-    var comment = this.data.shopComments[e.currentTarget.dataset.index]
-    app.globalData.shopComment = comment
-    wx.navigateTo({
-      url: './shopcommentdetail?shopId='+this.customerData.shopId+'&commentId='+comment.id
+  clickOnPlacehoderView: function() {
+    this.setData({
+      pageState: 0
     })
+    this.loadShopCommentInfo()
+  },
+  clickOnShopCommentView: function(e) {
+    var commentIndex = e.currentTarget.dataset.index
+    var comments = this.data.comments
+    if (!comments || comments.length <= commentIndex) {
+      return
+    }
+
+    var comment = comments[commentIndex]
+    app.globalData.shopComment = comment
+
+    wx.navigateTo({
+      url: '../shopcommentdetail/shopcommentdetail?shopId=' + this.customerData.shopId + '&commentId=' + comment.id,
+    })
+  },
+  clickOnCommentImageView: function(e) {
+    var commentIndex = e.currentTarget.dataset.commentIndex
+    var comments = this.data.comments
+    if (!comments || comments.length <= commentIndex) {
+      return
+    }
+
+    var imgIndex = e.currentTarget.dataset.index
+    var comment = comments[commentIndex]
+    if (!comment.images || comment.images.length <= imgIndex) {
+      return
+    }
+
+    wx.previewImage({
+      current: comment.images[imgIndex],
+      urls: comment.images
+    })    
   },
   /////////////////////////////////////////////private events//////////////////////////////////////
   loadComments: function() {

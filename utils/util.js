@@ -224,9 +224,23 @@ function validPhone(phone) {
         }
 }
 
+function arrayRemoteAt(array, index) {
+  if (!array || array.length <= index) {
+    return null
+  }
+
+  var val = array[index]
+  for (let i = 0; i < array.length - 1; i++) {
+    array[i] = array[i < index ? i : (i + 1)]
+  }
+  array.length -= 1
+  return val
+}
+
 module.exports = {
   MD5: MD5,
   validPhone: validPhone,
   formatTime: formatTime,
-  adFormatTime: adFormatTime
+  adFormatTime: adFormatTime,
+  arrayRemoteAt: arrayRemoteAt
 }

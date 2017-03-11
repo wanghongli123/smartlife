@@ -3,7 +3,7 @@
 addr-->
 
 <template name="addressview">
-    <view class="address-view">
+    <view class="address-view" catchtap="clickOnAddressView">
         <view class="left-view">
             <image class="left-icon" src="../../resources/icon_location.png"></image>
             <view class="detail-view">{{addr}}</view>

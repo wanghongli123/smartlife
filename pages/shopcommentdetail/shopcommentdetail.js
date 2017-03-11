@@ -5,9 +5,9 @@ var shopManager = require('../../apimanagers/shopmanager.js')
 
 Page({
   data:{
+    pageState: 0,
     shopInfo: null,
     shopComment: null,
-    pageState: 0,
     hasRecomandShops: false
   },
   customerData: {
@@ -17,14 +17,16 @@ Page({
   },
   onLoad:function(options){
     // 生命周期函数--监听页面加载
-    if (app.globalData.loginSuccessed) {
-      this.viewDidLoad(options)
-    } else {
-      var that = this
-      app.login(function() {
+    var that = this
+    setTimeout(function() {
+      if (app.globalData.loginSuccessed) {
         that.viewDidLoad(options)
-      })
-    }
+      } else {
+        app.login(function() {
+          that.viewDidLoad(options)
+        })
+      }
+    }, 500)
   },
   onShareAppMessage: function() {
     // 用户点击右上角分享
@@ -39,11 +41,15 @@ Page({
     //对评论点赞
   },
   clickOnCommentPhotoView: function(e) {
-    this.clickOnCommentMorePhotosView()
-  },
-  clickOnCommentMorePhotosView: function(e) {
+    var images = this.data.shopComment.images
+    var index = e.currentTarget.dataset.index
+    if (!images || index >= images.length) {
+      return
+    }
+
     wx.previewImage({
-      urls: this.data.shopComment.images
+      current: images[index],
+      urls: images,
     })
   },
   clickOnCollectionView: function(e) {
@@ -68,16 +74,10 @@ Page({
       this.collectShop(shopInfo.id)
     }
   },
-  clickOnPlacehoderView: function() {
-    this.setData({
-      pageState: 0
-    })
-    this.loadShopCommentInfo()
-  },
   /////////////////////////////////////////////private events//////////////////////////////////////
   viewDidLoad: function(options) {
     this.customerData.shopId = options['shopId']
-    this.customerData.commentId = options['commentid']
+    this.customerData.commentId = options['commentId']
 
     var shopComment = app.globalData.shopComment
     if (shopComment) {
@@ -90,7 +90,14 @@ Page({
       this.loadShopCommentInfo()
     }
 
-    this.loadShopInfo()
+    var shopInfo = app.globalData.shop
+    if (shopInfo) {
+      this.setData({
+        shopInfo: shopInfo
+      })
+    } else {
+      this.loadShopInfo()
+    }
   },
   loadShopInfo: function() {
     var that = this
@@ -104,13 +111,15 @@ Page({
     var that = this
     shopManager.loadShopCommentDetailWithParams({commentId: this.customerData.commentId, success: function(shopComment) {
       that.setData({
-        shopComment: shopComment || {},
-        pageState: !shopComment ? 3 : 1
+        shopComment: shopComment || that.data.shopComment,
+        pageState: that.data.pageState != 1 && !shopComment ? 3 : 1
       })
     }, fail: function() {
-      that.setData({
-        pageState: 2
-      })
+      if (that.data.pageState != 1) {
+        that.setData({
+          pageState: 2
+        })
+      }
     }, complete: function() {
       setTimeout(function(){
         that.customerData.isInNetworking = false
@@ -153,6 +162,7 @@ Page({
   updateShopCollectInfo: function(isCollected) {
     var shopInfo = this.data.shopInfo
     shopInfo.collected = isCollected
+    shopInfo.collected_num += isCollected ? (1) : (-1)
     this.setData({
       shopInfo: shopInfo
     })

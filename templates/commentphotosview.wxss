@@ -13,6 +13,13 @@
 .comment-photos-view .photo-view { 
     position: relative;
     margin-right: 18rpx;
+    margin: 0 18rpx 18rpx 0;
+}
+
+.comment-photos-view .photo-image {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 .comment-photos-view .closing-image {

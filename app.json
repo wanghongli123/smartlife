@@ -1,6 +1,10 @@
 {
   "pages":[
-    "pages/me/me"
+    "pages/shoplist/shoplist",
+    "pages/shopdetail/shopdetail",
+    "pages/shopcomment/shopcomment",
+    "pages/shopcommentlist/shopcommentlist",
+    "pages/shopcommentdetail/shopcommentdetail"
   ],
   "window":{
     "backgroundTextStyle":"light",

@@ -11,8 +11,8 @@ App({
       logs.unshift(Date.now())
       wx.setStorageSync('logs', logs)
 
-      // this.getLocation(null)
-      // this.loadShopCommentTags(null)
+      this.getLocation(null)
+      this.loadShopCommentTags(null)
   },
   getLocation: function(cb) {
     var that = this
@@ -38,7 +38,7 @@ App({
       var that = this
       if(this.globalData.userInfo){
         typeof cb == "function" && cb(this.globalData.userInfo)
-      }else{
+      } else {
         //调用登录接口
         wx.login({
           success: function () {
@@ -76,26 +76,26 @@ App({
   //////////////////////////////////////////////private events/////////////////////////////////////
   login: function(cb) {
     this.showLoadingView('登录中...')
+    this.loginByCode(cb)
+    return
     //用户登录
     var that = this
     wx.checkSession({
       success: function(){
         //登录态未过期
-        wx.getStorage({
-          key: kLoginCodeKey,
-          success: function(res){
-            // success
-            if (res) {
-              that.loginWithKey(res, cb)
-            } else {
-              that.loginByCode(cb)
-            }
-          },
-          fail: function() {
-            // fail
-            that.login(cb)
-          }
-        })
+        // wx.getStorage({
+        //   key: kLoginCodeKey,
+        //   success: function(res){
+        //     // success
+        //     that.loginWithKey(res, {}, cb)
+        //   },
+        //   fail: function() {
+        //     // fail
+        //     that.loginByCode(cb)
+        //   }
+        // })
+        wx.hideToast()
+        typeof cb == 'function' && cb()
       },
       fail: function(){
         //登录态过期
@@ -107,34 +107,36 @@ App({
     var that = this
     wx.login({
       success: function(res){
-        // success
-        if (res.code) {
-          that.loginWithKey(res.code, cb)
-        } else {
-          that.loginByCode(cb)
-        }
-      },
-      fail: function() {
-        // fail
-        that.loginByCode(cb)
+        console.log(res)
+        wx.getUserInfo({
+          success: function(userinfo){
+            // success
+            that.globalData.userInfo = userinfo.userInfo
+            that.loginWithKey(res.code, userinfo.userInfo || {}, cb)
+          },
+          fail: function() {
+            // fail
+            that.loginWithKey(res.code, {}, cb)
+          }
+        })
       }
     })
   },
-  loginWithKey(key, cb) {
+  loginWithKey(key, userInfo = {}, cb) {
     var that = this
-    userManager.login({params: null, success: function(res) {
+    var params = {code: key, name: userInfo['nickName'] || '', avatar: userInfo['avatarUrl'] || ''}
+    
+    userManager.login({params: params, success: function(res) {
+      //存储，待下次使用
+      wx.setStorageSync('login_token', res.token)
+
       wx.hideToast()
       that.globalData.loginSuccessed = true
       that.globalData.userId = res.userId
       typeof cb == 'function' && cb()
-      //存储，待下次使用
-      wx.setStorage({
-        key: kLoginCodeKey,
-        data: res.userId
-      })
     }, fail: function() {
       wx.hideToast()
-      that.alertUserLoginFailedAndReloginWithKey(key, cb)
+      that.alertUserLoginFailedAndRelogin(cb)
     }})
   },
   showLoadingView: function(msg) {
@@ -144,13 +146,13 @@ App({
       duration: 100000
     })
   },
-  alertUserLoginFailedAndReloginWithKey(key, cb) {
+  alertUserLoginFailedAndRelogin(cb) {
     var that = this
     wx.showModal({
       title: '温馨提示',
       content: '当前登录失败，请重新登录',
       success: function(res) {
-        that.loginWithKey(key, cb)
+        that.loginByCode(cb)
       }
     })
   },
@@ -164,5 +166,11 @@ App({
         typeof cb == 'function' && cb(tags)
       }})
     }
+  },
+  showMessage: function(msg) {
+    wx.showModal({
+      title: '温馨提示',
+      content: msg
+    })
   }
 })

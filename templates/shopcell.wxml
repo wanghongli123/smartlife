@@ -17,7 +17,7 @@ index: 当前的索引
     <view class="shop-cell" catchtap="clickOnShopCell" data-index="{{index}}">
         <view class="shop-info-view">
             <view class="avatar-view view-avatarplaceholder">
-                <image class="view-allscreen" src="{{avatar}}" mode="aspectFill"></image>
+                <image class="view-allscreen" src="{{images&&images.length?images[0]:''}}" mode="aspectFill"></image>
             </view>
             <view class="detail-view">
                 <view class="name-view">
@@ -41,12 +41,12 @@ index: 当前的索引
         </view>
         <view class="other-info-view">
             <view class="stars-view">
-                <block wx:for="{{[1,2,3,4,5]}}" wx:key="*this">
-                    <image src="{{item <= score ? '../../resources/icon_star.png':(item <= score + 0.5 ?'../../resources/icon_half-star.png': '../../resources/icon_empty-star.png')}}" class="star-view"></image>
+                <block wx:for="{{[1, 2, 3, 4, 5]}}" wx:key="*this">
+                    <image src="{{item <= overall_score ? '../../resources/icon_star.png' : (item <= overall_score - 0.0 + 0.5 ? '../../resources/icon_half-star.png' : '../../resources/icon_empty-star.png')}}" class="star-view"></image>
                 </block>
             </view>
-            <view class="comment-view">{{appriate}}</view>
-            <view wx:if="{{canCollect}}" class="collection-view">{{collection}}</view>
+            <view class="comment-view">{{commented_num}}  条点赞信息</view>
+            <view wx:if="{{canCollect}}" class="collection-view">{{collected_num}}  人已收藏</view>
         </view>
         <view class="bottom-line" wx:if="{{seperator}}"></view>
     </view>

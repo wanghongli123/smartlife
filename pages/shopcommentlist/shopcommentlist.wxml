@@ -1,7 +1,7 @@
 <view class="container">
     <block wx:for="{{comments}}" wx:key="*this">
         <import src="../../templates/shopcommentcell"/>
-        <template is="shopcommentcell" data="{{...item, index}}"/>
+        <template is="shopcommentcell" data="{{...item, commentIndex: index, seperator: true}}"/>
     </block>
 
     <!--加载更多-->

@@ -8,7 +8,8 @@ title-->
     <view class="shop-tags-view">
         <block wx:for="{{tags}}" wx:key="*this">
             <view class="tag-view">
-                {{item}}
+                <view>{{item.name}}</view>
+                <view>{{item.num}}</view>
             </view>
         </block>
     </view>

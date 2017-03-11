@@ -3,7 +3,7 @@
         <swiper wx:if="{{shopInfo&&shopInfo.images.length>0}}" class="shopimages-view" indicator-dots="true" autoplay="true" interval="4000" duration="1000" circular="true">
             <block wx:for="{{shopInfo.images}}" wx:key="*this">
                 <swiper-item>
-                    <view class="view-allscreen view-imageplaceholder">
+                    <view class="view-allscreen view-imageplaceholder" catchtap="clickOnShopImagesView" data-index="{{index}}">
                         <image class="view-allscreen" src="{{item}}" mode="aspectFill"></image>
                     </view>
                 </swiper-item>
@@ -18,6 +18,7 @@
         <import src="../../templates/addressview"/>
         <template is="addressview" data="{{addr: shopInfo.address}}"/>
 
+        
         <view class="instruction-view">
             <view class="line-view"></view>
             <view class="options-view">
@@ -28,62 +29,68 @@
                     </view>
                 </block>
             </view>
-            <view class="line-view"></view>
         </view>
 
         <import src="../../templates/commonsectionview"/>
-        <!--评论-->
+        <!--服务类别-->
         <block wx:if="{{shopInfo&&shopInfo.services&&shopInfo.services.length>0}}">
             <view id="view-0" class="vertical-padding-view"></view>
             <template is="commonsectionview" data="{{title:'服务项目', action: '全部 ' + shopInfo.services.length + ' 项服务'}}"></template>
-
             <block wx:for="{{shopInfo.services}}" wx:key="*this">
                 <!--服务类目-->
                 <import src="../../templates/shopservicecell"/>
                 <template is="shopservicecell" data="{{...item}}"/>
             </block>
+            <view class="vertical-padding-view"></view>
         </block>
         
         <!--总评分-->
         <block wx:if="{{shopInfo&&shopInfo.scoreSummary}}">
-            <view id="view-1" class="vertical-padding-view"></view>
             <import src="../../templates/commentsummaryview"/>
             <template is="commentsummaryview" data="{{...shopInfo.scoreSummary}}"/>
         </block>
 
         <!--师傅印象-->
-        <block wx:if="{{shopInfo&&shopInfo.commentTags&&shopInfo.commentTags.length>0}}">
+        <block wx:if="{{shopInfo&&shopInfo.tags&&shopInfo.tags.length>0}}">
+            <view class="line-super-view">
+                <view class="line-view"></view>
+            </view>
             <view class="vertical-padding-view"></view>
-            <template is="commonsectionview" data="{{title:'师傅印象', action: '展开全部'}}"></template>
+            <template is="commonsectionview" data="{{title:'师傅印象', action: '展开全部', actionName: 'clickShowCommentTags'}}"></template>
             <view class="vertical-padding-view"></view>
             <import src="../../templates/shoptagsview"/>
-            <template is="shoptagsview" data="{{tags: shopInfo.commentTags}}"/>
+            <template is="shoptagsview" data="{{tags: shopInfo.tags}}"/>
         </block>
 
         <!--商户评价-->
-        <block wx:if="{{shopInfo&&shopInfo.commented_num>0}}">
+        <block wx:if="{{shopInfo&&shopInfo.comments&&shopInfo.comments.length>0}}">
+            <view class="line-super-view">
+                <view class="line-view"></view>
+            </view>
             <view class="vertical-padding-view"></view>
-            <template is="commonsectionview" data="{{title:'商户评价', action: '全部 ' + shopInfo.commented_num + ' 项服务'}}"></template>
+            <view id='view-1'></view>
+            <template is="commonsectionview" data="{{title:'商户评价', action: '全部 ' + shopInfo.commented_num + ' 项服务', actionName: 'clickShowMoreComments'}}"></template>
             <import src="../../templates/shopcommentcell"/>
-            <block wx:for="{{shopInfo.comments}}">
-                <template is="shopcommentcell" data="{{...item}}"/>
+            <block wx:for="{{shopInfo.comments}}" wx:key="*this">
+                <template is="shopcommentcell" data="{{...item, commentIndex: index}}"/>
             </block>
         </block>
 
-        <view id="view-2" class="seperator-box">
+        <view class="seperator-box">
             <view class="seperator-view"></view>
         </view>
 
+        <view id="view-2"></view>
         <block wx:if="{{shopInfo&&shopInfo.desc.length>0}}">
             <view class="vertical-padding-view"></view>
             <template is="commonsectionview" data="{{title:'店铺简介', action: '展开全部', actionName: 'clickShowShopDesc'}}"></template>
-            <view class="shop-intro-view limit-line">{{shopInfo.desc}}</view>
+            <view class="shop-intro-view {{showShopDesc?'':'limit-line'}}">{{shopInfo.desc}}</view>
         </block>
 
         <block wx:if="{{shopInfo&&shopInfo.character.length>0}}">
             <view class="vertical-padding-view"></view>
             <template is="commonsectionview" data="{{title:'特色服务', action: '展开全部', actionName: 'clickShowShopCharacter'}}"></template>
-            <view class="shop-intro-view limit-line">{{shopInfo.character}}</view>
+            <view class="shop-intro-view {{showShopCharacter?'':'limit-line'}}">{{shopInfo.character}}</view>
         </block>
 
         <view class="bottom-padding-view"></view>

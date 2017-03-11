@@ -3,7 +3,7 @@
 <template name="shopinfoview">
     <view class="shop-view">
         <view class="avatar view-avatarplaceholder">
-            <image class="view-allscreen" src=""></image>
+            <image class="view-allscreen" src="{{image}}"></image>
         </view>
         <view class="info-view">
             <view class="name-view">{{name}}</view>

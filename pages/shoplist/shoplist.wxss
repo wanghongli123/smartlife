@@ -1,8 +1,8 @@
 /* pages/shoplist/shoplist.wxss */
 
 @import '../../templates/shopcell.wxss';
-@import '../../templates/loadingmorecell.wxss';
 @import '../../templates/placeholderview.wxss';
+@import '../../templates/loadingmorecell.wxss';
 
 .nav-view {
     width: 100%;

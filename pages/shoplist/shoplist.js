@@ -18,20 +18,22 @@ Page({
     pageState: 0,
   },
   customerData: {
-    page: 0,
+    page: 1,
     metas: [],
-    isInNetWorking: false
+    isInNetworking: false
   },
   onLoad: function(options) {
     // 生命周期函数--监听页面加载
-    if (app.globalData.loginSuccessed) {
-      this.viewDidLoad(options)
-    } else {
-      var that = this
-      app.login(function() {
+    var that = this
+    setTimeout(function() {
+        if (app.globalData.loginSuccessed) {
         that.viewDidLoad(options)
-      })
-    }
+      } else {
+        app.login(function() {
+          that.viewDidLoad(options)
+        })
+      }
+    }, 500)
 
     app.getSystemInfo(function(res) {
       that.setData({
@@ -42,7 +44,7 @@ Page({
   },
   onReachBottom: function() {
     // 页面上拉触底事件的处理函数
-    if (!this.data.hasMore || this.customerData.isInNetWorking) {
+    if (!this.data.hasMore || this.customerData.isInNetworking) {
       return
     }
     this.loadShopsWithParams()
@@ -52,6 +54,13 @@ Page({
     // 用户点击右上角分享
   },
   ///////////////////////////////////////////////view events///////////////////////////////////////
+  clickOnPlacehoderView: function() {
+    this.setData({
+      pageState: 0
+    })
+    this.customerData.page = 1
+    this.loadShopsWithParams()
+  },
   //选择筛选选项.
   clickSelectMeta: function(e) {
     // var index
@@ -141,23 +150,23 @@ Page({
   viewDidLoad: function(options) {
     this.loadShopsWithParams()
   },
-  loadShopsWithParams: function(parmas) {
-    if (this.customerData.isInNetWorking) {
+  loadShopsWithParams: function() {
+    if (this.customerData.isInNetworking) {
       return
     }
-    this.customerData.isInNetWorking = true
+    this.customerData.isInNetworking = true
     
     let params = this.loadShopsParams()
     let success = this.loadShopsSuccessed
-    let failed = this.loadShopsFailed
+    let fail = this.loadShopsFailed
     let that = this
-    let completed = function() {
+    let complete = function() {
       setTimeout(function(){
         wx.hideToast()
-        that.customerData.isInNetWorking = false
+        that.customerData.isInNetworking = false
       }, 2000)
     }
-    shopManager.loadShopsWithParams({params, success, failed, completed})
+    shopManager.loadShopsWithParams({params, success, fail, complete})
   },
   resetLoadingParams: function() {
     this.customerData.pageNo = 0
@@ -219,7 +228,7 @@ Page({
     }, complete: function() {
       setTimeout(function() {
         wx.hideToast()
-        that.customerData.isInNetWorking = false
+        that.customerData.isInNetworking = false
       }, 2000)
     }})
   },
@@ -229,8 +238,9 @@ Page({
     for (let i = 0; i < shops.length; i++) {
       let shop = shops[i];
       if (shop.id == shopId) {
-        shop.collected = isCollected
         hasShop = true
+        shop.collected = isCollected
+        shop.collected_num += isCollected ? (1) : (-1)
         break;
       }
     }

@@ -1,7 +1,7 @@
 <scroll-view wx:if="{{shopInfo}}" scroll-y="true" class="container commentview-bgcolor">
     <!--店铺信息-->
     <import src="../../templates/shopinfoview"/>
-    <template is="shopinfoview" data="{{name: shopInfo.name, service: shopInfo.service}}"/>
+    <template is="shopinfoview" data="{{name: shopInfo.name, service: shopInfo.service, image: shopInfo && shopInfo.images && shopInfo.images.length > 0 && shopInfo.images[0]}}"/>
 
     <!--综合评论-->
     <view class="content-view">
@@ -31,7 +31,7 @@
         </view>
 
         <import src="../../templates/commentphotosview"/>
-        <template is="commentphotosview" data="{{photos:images, canAddingMorePhotos}}"></template>
+        <template is="commentphotosview" data="{{images, canAddingMorePhotos}}"></template>
 
         <import src="../../templates/commentsectionview"/>
         <template is="commentsectionview" data="{{title: '给师傅的悄悄话'}}"/>

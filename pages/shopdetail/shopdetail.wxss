@@ -37,9 +37,17 @@
     height: 30rpx;
 }
 
-.line-view {
+.line-super-view {
     width: 100%;
+    padding: 0 30rpx;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.line-view {
     height: 0;
+    width: 100%;
     border-top: solid 1rpx #eaeaea;
 }
 

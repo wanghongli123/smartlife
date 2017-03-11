@@ -15,7 +15,7 @@ options: []
                     {{score}}
                 </view>
                 <view>综合评分</view>
-                <view class="person-view">{{persons}}</view>
+                <view class="person-view">基于{{commented_num}}位用户评价</view>
             </view>
             <view class="seperation-view"></view>
             <view class="right-view">
@@ -23,8 +23,8 @@ options: []
                     <view class="item-score-view">
                         <view class="name-view">{{item.name}}</view>
                         <view class="stars-view">
-                            <block wx:for="{{[1,2,3,4,5]}}" wx:key="*this" wx:for-item="score">
-                                <image src="{{score <= item.score ? '../../resources/icon_star.png':(score <= item.score + 0.5 ?'../../resources/icon_half-star.png': '../../resources/icon_empty-star.png')}}" class="star-view"></image>
+                            <block wx:for="{{[1, 2, 3, 4, 5]}}" wx:key="*this" wx:for-item="score">
+                                <image src="{{score <= item.score ? '../../resources/icon_star.png' : (score <= (item.score - 0.0 + 0.5) ? '../../resources/icon_half-star.png' : '../../resources/icon_empty-star.png')}}" class="star-view"></image>
                             </block>
                             <view class="score-text">{{item.score}}</view>
                         </view>
@@ -32,6 +32,6 @@ options: []
                 </block>
             </view>
         </view>
-        <view class="line-view"></view>
+        <!--<view class="line-view"></view>-->
     </view>
 </template>

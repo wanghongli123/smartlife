@@ -1,4 +1,5 @@
 
+const kLimitShowTagsNum = 6
 var app = getApp()
 var shopManager = require('../../apimanagers/shopmanager.js')
 
@@ -7,23 +8,27 @@ Page({
     shopInfo: {},
     pageState: 0,
     scrollIntoView: '',
+    showAllTags: false,
     showShopDesc: false,
-    showShopCharacter: false
+    showShopCharacter: false,
   },
   customerData: {
     shopId: '',
+    tags: [],
     isInNetworking: false
   },
   onLoad:function(options){
     // 生命周期函数--监听页面加载
-    if (app.globalData.loginSuccessed) {
-      this.viewDidLoad(options)
-    } else {
-      var that = this
-      app.login(function() {
+    var that = this
+    setTimeout(function() {
+      if (app.globalData.loginSuccessed) {
         that.viewDidLoad(options)
-      })
-    }
+      } else {
+        app.login(function() {
+          that.viewDidLoad(options)
+        })
+      }
+    }, 500)
   },
   onShareAppMessage: function() {
     // 用户点击右上角分享
@@ -34,6 +39,29 @@ Page({
     }
   },
   ///////////////////////////////////////////////view events///////////////////////////////////////
+  clickOnShopImagesView: function(e) {
+    var images = this.data.shopInfo.images
+    if (!this.data.shopInfo || !images) {
+      return
+    }
+    var index = e.currentTarget.dataset.index
+    var current = index < images.length ? images[index] : ''
+    wx.previewImage({
+      current: current,
+      urls: images
+    })
+  },
+  clickOnAddressView: function() {
+    if (!this.data.shopInfo || !this.data.shopInfo.areas) {
+      return
+    }
+    wx.openLocation({
+      latitude: this.data.shopInfo.areas.la - 0.0, // 纬度，范围为-90~90，负数表示南纬
+      longitude: this.data.shopInfo.areas.lo - 0.0, // 经度，范围为-180~180，负数表示西经
+      scale: 28, // 缩放比例
+      address: this.data.shopInfo.address, // 地址的详细说明
+    })
+  },
   clickOnMeView: function() {
     wx.navigateTo({
       url: '../me/me'
@@ -83,15 +111,69 @@ Page({
       url: '../shopcommentlist/shopcommentlist?shopId='+this.customerData.shopId
     })
   },
-  clickShowShopDesc: function() {
+  clickShowCommentTags: function() {
     this.setData({
-      showShopDesc: true
+      showAllTags: !this.data.showAllTags 
+    })
+
+    var shop = this.data.shopInfo
+    shop.tags = this.getShopShowTags()
+    this.setData({
+      shopInfo: shop 
+    })
+  },
+  clickShowShopDesc: function() {
+    if (this.data.showShopDesc) {
+      return
+    }
+    this.setData({
+      showShopDesc: !this.data.showShopDesc
     })
   },
   clickShowShopCharacter: function() {
+    if (this.data.showShopCharacter) {
+      return
+    }
     this.setData({
-      showShopCharacter: true
+      showShopCharacter: !this.data.showShopCharacter
     })
+  },
+  clickShowMoreComments: function() {
+    wx.navigateTo({
+      url: '../shopcommentlist/shopcommentlist?shopId=' + this.customerData.shopId 
+    })
+  },
+  clickOnShopCommentView: function(e) {
+    var commentIndex = e.currentTarget.dataset.index
+    var comments = this.data.shopInfo.comments
+    if (!comments || comments.length <= commentIndex) {
+      return
+    }
+
+    var comment = comments[commentIndex]
+    app.globalData.shopComment = comment
+
+    wx.navigateTo({
+      url: '../shopcommentdetail/shopcommentdetail?shopId=' + this.customerData.shopId + '&commentId=' + comment.id,
+    })
+  },
+  clickOnCommentImageView: function(e) {
+    var commentIndex = e.currentTarget.dataset.commentIndex
+    var comments = this.data.shopInfo.comments
+    if (!comments || comments.length <= commentIndex) {
+      return
+    }
+
+    var imgIndex = e.currentTarget.dataset.index
+    var comment = comments[commentIndex]
+    if (!comment.images || comment.images.length <= imgIndex) {
+      return
+    }
+
+    wx.previewImage({
+      current: comment.images[imgIndex],
+      urls: comment.images
+    })    
   },
   ///////////////////////////////////////////////private events////////////////////////////////////
   viewDidLoad: function(options) {
@@ -109,6 +191,7 @@ Page({
         pageState: 0
       })
     }
+
     this.customerData.shopId = options['shopId']
     this.loadShopDetailWithParams(this.loadShopDetailParams())
   },
@@ -123,9 +206,16 @@ Page({
   },
   loadShopDetailSuccess: function(res) {
     if (res) {
+      res.scoreSummary = this.generateShopCommentScoreSummary(res)
+      this.customerData.tags = res.tags || []
+      res.tags = this.getShopShowTags()
+      
       this.setData({
         shopInfo: res
       })
+
+      //加载完shop详情后，加载评论信息.
+      this.loadShopComments()
     }
     var that = this
     setTimeout(function() {
@@ -135,9 +225,56 @@ Page({
     }, 2000)
   },
   loadShopDetailFail: function() {
+    if (this.data.pageState == 1) {
+      return
+    }
+
     this.showLoadingView('加载店铺详情出错...')
     this.setData({
-      pageState: this.data.pageState != 1 ? 1 : 2
+      pageState: 2
+    })
+  },
+  generateShopCommentScoreSummary: function(shop) {
+    var score = new Number(shop.overall_score ? shop.overall_score : 0)
+    var quality_score = new Number(shop.quality_score ? shop.quality_score : 0)
+    var speed_score = new Number(shop.speed_score ? shop.speed_score : 0)
+    var attitude_score = new Number(shop.attitude_score ? shop.attitude_score : 0)
+    return {
+      score: score.toFixed(1),
+      commented_num: shop.commented_num,
+      otherScores: [
+        {
+          name: '品质',
+          score: quality_score.toFixed(1)
+        },
+        {
+          name: '速度',
+          score: speed_score.toFixed(1)
+        },
+        {
+          name: '态度',
+          score: attitude_score.toFixed(1)
+        }
+      ]
+    }
+  },
+  getShopShowTags: function() {
+    return this.data.showAllTags ? this.customerData.tags : this.customerData.tags.slice(0, kLimitShowTagsNum)
+  },
+  loadShopComments: function() {
+    var shopId = this.customerData.shopId
+    var success = this.loadShopCommentsSuccess
+    shopManager.loadShopCommentsWithParams({shopId: shopId, success: success})
+  },
+  loadShopCommentsSuccess: function(res) {
+    if (!res || !res.data || res.data.length == 0) {
+      return
+    }
+
+    var shop = this.data.shopInfo
+    shop.comments = res.data.slice(0, 2)
+    this.setData({
+      shopInfo: shop
     })
   },
   collectShop: function(shopId) {
@@ -174,7 +311,7 @@ Page({
   updateShopCollectedInfo: function(isC) {
     var shopInfo = this.data.shopInfo
     shopInfo.collected = isC
-    shopInfo.collected_num += (isC?1:-1) 
+    shopInfo.collected_num += (isC? 1 : -1) 
     this.setData({
       shopInfo: shopInfo
     })

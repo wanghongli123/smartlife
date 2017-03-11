@@ -6,43 +6,50 @@ upcount: 支持人数
 comment: 点评内容
 photos: 拍照
 service: 点评服务
-date: 店铺时间-->
+date: 店铺时间
+commentIndex: 索引号
+-->
 
 <template name="shopcommentcell">
-    <view class="shop-comment-cell {{seperator?'view-bottom-line':''}}" catchtap="clickOnShopCommentView" data-index="{{index}}">
-        <view class="avatar-view view-avatarplaceholder">
-            <image class="avatar-image" src=""></image>
-        </view>
-        <view class="info-view">
-            <view class="top-view">
-                <view class="left-view">
-                    <view class="name-view">{{name}}</view>
-                    <view class="stars-view">
-                        <block wx:for="{{[1,2,3,4,5]}}" wx:key="*this">
-                            <image src="{{item <= 2.5 ? '../../resources/icon_star.png':(item <= 2.5 + 0.5 ?'../../resources/icon_half-star.png': '../../resources/icon_empty-star.png')}}" class="star-view"></image>
+    <view class="shop-comment-cell">
+        <view class="content-view" catchtap="clickOnShopCommentView" data-index="{{commentIndex}}">
+            <view class="avatar-view view-avatarplaceholder">
+                <image class="avatar-image" src="{{user && user.avatar ? user.avatar : ''}}"></image>
+            </view>
+            <view class="info-view">
+                <view class="top-view">
+                    <view class="left-view">
+                        <view wx:if="{{user&&user.name&&user.name.length}}" class="name-view">{{user.name}}</view>
+                        <view class="stars-view">
+                            <block wx:for="{{[1,2,3,4,5]}}" wx:key="*this">
+                                <image src="{{item <= overall_score ? '../../resources/icon_star.png':(item <= overall_score + 0.5 ?'../../resources/icon_half-star.png': '../../resources/icon_empty-star.png')}}" class="star-view"></image>
+                            </block>
+                        </view>
+                    </view>
+                    <!--<view class="right-view">
+                        <image src="{{isUp?'../../resources/icon_zan-red.png':'../../resources/icon_zan-empty.png'}}"></image>
+                        <view>{{upcount}}人点赞</view>
+                    </view>-->
+                </view>
+                <view class="comment-view">
+                    {{content}}
+                </view>
+                <view wx:if="{{images&&images.length>0}}" class="photos-view">
+                    <block wx:for="{{images}}" wx:key="*this">
+                        <block wx:if="{{index < 3}}">
+                            <view class="photo-view view-imageplaceholder" data-comment-index="{{commentIndex}}" data-index="{{index}}" catchtap="clickOnCommentImageView">
+                                <image class="photo-image" src="{{item}}}"></image>
+                                <view wx:if="{{index==2&&images.length>3}}" class="mask-view">全部{{images.length}}张</view>
+                            </view>
                         </block>
-                    </view>
+                    </block>
                 </view>
-                <view class="right-view">
-                    <image src="{{isUp?'../../resources/icon_zan-red.png':'../../resources/icon_zan-empty.png'}}"></image>
-                    <view>{{upcount}}人点赞</view>
+                <view class="bottom-view">
+                    <view>点评{{service}}</view>
+                    <view>{{date}}</view>
                 </view>
-            </view>
-            <view class="comment-view">
-                {{comment}}
-            </view>
-            <view wx:if="{{photos&&photos.length>0}}" class="photos-view">
-                <block wx:for="{{photos}}" wx:key="*this">
-                    <view class="photo-view view-imageplaceholder">
-                        <image class="photo-image" src=""></image>
-                        <view wx:if="{{index==2&&photos.length>3}}" class="mask-view" catchtap="clickOnShowMorePhotosView">全部{{photos.length}}张</view>
-                    </view>
-                </block>
-            </view>
-            <view class="bottom-view">
-                <view>{{service}}</view>
-                <view>{{date}}</view>
             </view>
         </view>
+        <view class="view-bottom-line"></view>
     </view>
 </template>

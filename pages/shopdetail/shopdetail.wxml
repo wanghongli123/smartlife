@@ -22,8 +22,8 @@
         <view class="instruction-view">
             <view class="line-view"></view>
             <view class="options-view">
-                <block wx:for="{{['服务项目','点赞评价','商户信息']}}" wx:key="*this">
-                    <view class="option-view {{0==index?'option-item-active':''}}" bindtap="clickOnOptionView" data-index="{{index}}">
+                <block wx:for="{{['点赞评价','商户信息']}}" wx:key="*this">
+                    <view class="option-view {{0==index?'option-item-active':''}}" catchtap="clickOnOptionView" data-index="{{index}}">
                         <view class="option-item">{{item}}</view>
                         <view class="option-bottom-view {{0==index?'option-bottom-active':''}}"></view>
                     </view>
@@ -33,16 +33,15 @@
 
         <import src="../../templates/commonsectionview"/>
         <!--服务类别-->
-        <block wx:if="{{shopInfo&&shopInfo.services&&shopInfo.services.length>0}}">
+        <!--<block wx:if="{{shopInfo&&shopInfo.services&&shopInfo.services.length>0}}">
             <view id="view-0" class="vertical-padding-view"></view>
             <template is="commonsectionview" data="{{title:'服务项目', action: '全部 ' + shopInfo.services.length + ' 项服务'}}"></template>
             <block wx:for="{{shopInfo.services}}" wx:key="*this">
-                <!--服务类目-->
                 <import src="../../templates/shopservicecell"/>
                 <template is="shopservicecell" data="{{...item}}"/>
             </block>
             <view class="vertical-padding-view"></view>
-        </block>
+        </block>-->
         
         <!--总评分-->
         <block wx:if="{{shopInfo&&shopInfo.scoreSummary}}">
@@ -56,7 +55,7 @@
                 <view class="line-view"></view>
             </view>
             <view class="vertical-padding-view"></view>
-            <template is="commonsectionview" data="{{title:'师傅印象', action: '展开全部', actionName: 'clickShowCommentTags'}}"></template>
+            <template is="commonsectionview" data="{{title:'师傅印象', action: needFoldTags?'展开全部':'', actionName: 'clickShowCommentTags'}}"></template>
             <view class="vertical-padding-view"></view>
             <import src="../../templates/shoptagsview"/>
             <template is="shoptagsview" data="{{tags: shopInfo.tags}}"/>

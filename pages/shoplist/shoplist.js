@@ -3,6 +3,7 @@
 **/
 
 var app = getApp()
+var util = require('../../utils/util.js')
 var shareConfig = require('../../utils/shareconfig.js')
 var shopManager = require('../../apimanagers/shopmanager.js')
 
@@ -206,7 +207,7 @@ Page({
     var that = this
     shopManager.collectShopWithParams({shopId: shopId, success: function() {
       wx.hideToast()
-      that.updateShopCollectInfo(shopId, true)
+      that.updateAfterCollectFinished(shopId, true)
     }, fail: function(er) {
       that.showLoadingView(er||'收藏店铺出错')
     }, complete: function() {
@@ -223,7 +224,7 @@ Page({
     this.showLoadingView('取消收藏中...')
     shopManager.unCollectShopWithParams({shopId: shopId, success: function(){
       wx.hideToast()
-      that.updateShopCollectInfo(shopId, false)
+      that.updateAfterCollectFinished(shopId, false)
     }, fail: function(er) {
       that.showLoadingView(er||'取消收藏出错')
     }, complete: function() {
@@ -233,20 +234,10 @@ Page({
       }, 2000)
     }})
   },
-  updateShopCollectInfo: function(shopId, isCollected) {
-    var hasShop = false
-    var shops = this.data.shops
-    for (let i = 0; i < shops.length; i++) {
-      let shop = shops[i];
-      if (shop.id == shopId) {
-        hasShop = true
-        shop.collected = isCollected
-        shop.collected_num += isCollected ? (1) : (-1)
-        break;
-      }
-    }
-
-    if (hasShop) {
+  updateAfterCollectFinished: function(shopId, isCollected) {
+    var hasShop = this.data.shops.length > 0
+    if (this.data.shops.length > 0) {
+      let shops = util.updateShopsCollectionState(this.data.shops)
       this.setData({
         shops: shops
       })

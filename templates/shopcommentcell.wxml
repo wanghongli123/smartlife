@@ -45,7 +45,7 @@ commentIndex: 索引号
                     </block>
                 </view>
                 <view class="bottom-view">
-                    <view>点评{{service}}</view>
+                    <!--<view>点评{{service}}</view>-->
                     <view>{{date}}</view>
                 </view>
             </view>

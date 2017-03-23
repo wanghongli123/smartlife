@@ -2,7 +2,7 @@
 * 店铺评论列表页.
 **/
 
-var app = getApp();
+var app = getApp()
 var shopManager = require('../../apimanagers/shopmanager.js')
 var commentManager = require('../../apimanagers/commentmanager.js')
 

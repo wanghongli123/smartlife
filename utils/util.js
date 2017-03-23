@@ -10,10 +10,9 @@ function formatTime(date) {
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 
-function adFormatTime(date) {
+function adFormatTime(adTimeStamp) {
   var crtDate = new Date();
   var timeStamp = crtDate.valueOf() / 1000;
-  var adTimeStamp = date.valueOf() / 1000;
   if (timeStamp - adTimeStamp < 60) {
     return "刚刚发布";
   } else {
@@ -237,10 +236,23 @@ function arrayRemoteAt(array, index) {
   return val
 }
 
+function updateShopsCollectionState(shopId, isC, shops) {
+  for (let i = 0; i < shops.length; i++) {
+    let shop = shops[i];
+    if (shop.id == shopId) {
+      shop.collected = isC
+      shop.collected_num += isC ? (1) : (-1)
+      break;
+    }
+  }
+  return shops
+}
+
 module.exports = {
   MD5: MD5,
   validPhone: validPhone,
   formatTime: formatTime,
   adFormatTime: adFormatTime,
-  arrayRemoteAt: arrayRemoteAt
+  arrayRemoteAt: arrayRemoteAt,
+  updateShopsCollectionState: updateShopsCollectionState
 }

@@ -13,6 +13,7 @@ Page({
     pageState: 0,
     scrollIntoView: '',
     showAllTags: false,
+    needFoldTags: false, //是否需要折叠tags
     showShopDesc: false,
     showShopCharacter: false,
   },
@@ -116,6 +117,10 @@ Page({
     })
   },
   clickShowCommentTags: function() {
+    if (!this.customerData.needFoldTags) {
+      return
+    }
+
     this.setData({
       showAllTags: !this.data.showAllTags 
     })
@@ -127,17 +132,11 @@ Page({
     })
   },
   clickShowShopDesc: function() {
-    if (this.data.showShopDesc) {
-      return
-    }
     this.setData({
       showShopDesc: !this.data.showShopDesc
     })
   },
   clickShowShopCharacter: function() {
-    if (this.data.showShopCharacter) {
-      return
-    }
     this.setData({
       showShopCharacter: !this.data.showShopCharacter
     })
@@ -204,10 +203,13 @@ Page({
     app.globalData.shopInfo = null
 
     if (shopInfo) {
+      this.customerData.tags = shopInfo.tags || []
+      shopInfo.tags = this.getShopShowTags()
       this.customerData.hasLocalInfo = true
       this.setData({
         pageState: 1,
-        shopInfo: shopInfo
+        shopInfo: shopInfo,
+        needFoldTags: this.customerData.tags.length > kLimitShowTagsNum
       })
     } else {
       this.setData({
@@ -234,7 +236,8 @@ Page({
       res.tags = this.getShopShowTags()
       
       this.setData({
-        shopInfo: res
+        shopInfo: res,
+        needFoldTags: this.customerData.tags.length > kLimitShowTagsNum
       })
 
       //加载完shop详情后，加载评论信息.

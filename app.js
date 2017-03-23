@@ -75,20 +75,31 @@ App({
   },
   //////////////////////////////////////////////private events/////////////////////////////////////
   login: function(cb) {
-    this.loginByCode(cb)
-    return
-    //用户登录
     var that = this
-    wx.checkSession({
-      success: function(){
-        wx.hideToast()
+    wx.getStorage({
+      key: 'login_token',
+      success: function(res){
+        // success
         typeof cb == 'function' && cb()
       },
-      fail: function(){
-        //登录态过期
+      fail: function() {
+        // fail
         that.loginByCode(cb)
       }
     })
+    // return
+    //用户登录
+    // var that = this
+    // wx.checkSession({
+    //   success: function(){
+    //     wx.hideToast()
+    //     typeof cb == 'function' && cb()
+    //   },
+    //   fail: function(){
+    //     //登录态过期
+    //     that.loginByCode(cb)
+    //   }
+    // })
   },
   loginByCode(cb) {
     var that = this

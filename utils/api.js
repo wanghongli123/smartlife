@@ -7,7 +7,7 @@ function lkkUploadImageConfigUrl() {
 }
 
 function host() {
-    return 'http://120.77.170.68'//'http://crmtest.baixing.com.cn'//'http://localhost:8888';
+    return  'http://localhost:8888'//'http://120.77.170.68'//'http://crmtest.baixing.com.cn'//;
 }
 
 function userLoginUrl() {
@@ -16,6 +16,15 @@ function userLoginUrl() {
 
 function shopListUrl() {
     return host() + '/wxa/shop'
+}
+
+//用户收藏的店铺
+function userCollectionShopsUrl(userId) {
+    return host() + '/wxa/collection'
+}
+
+function userCommentShopsUrl() {
+    return host() + '/wxa/comment'
 }
 
 function shopDetailUrl(shopId) {
@@ -40,11 +49,6 @@ function shopCommentDetailUrl(commentId) {
 //获取店铺评论的配置url
 function shopCommentConfigsUrl(shopId) {
     return host() + ''
-}
-
-//用户收藏的店铺
-function userCollectedShopsUrl(userId) {
-    return host() + userId
 }
 
 //用户收藏店铺url
@@ -76,12 +80,13 @@ module.exports = {
     lkkHost: lkkHost,
     userLoginUrl: userLoginUrl,
     shopListUrl: shopListUrl,
+    userCollectionShopsUrl: userCollectionShopsUrl,
+    userCommentShopsUrl: userCommentShopsUrl,
     shopDetailUrl: shopDetailUrl,
     commentShopUrl: commentShopUrl,
     shopCommentsUrl: shopCommentsUrl,
     shopCommentDetailUrl: shopCommentDetailUrl,
     shopCommentConfigsUrl: shopCommentConfigsUrl,
-    userCollectedShopsUrl: userCollectedShopsUrl,
     userCollectShopUrl: userCollectShopUrl,
     userUnCollectShopUrl: userUnCollectShopUrl,
     getShopCommentTagsUrl: getShopCommentTagsUrl,

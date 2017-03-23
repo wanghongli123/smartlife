@@ -19,12 +19,11 @@ function loadShopCommentsWithParams({shopId='', params={}, success=null, fail=nu
     if (datas && datas.length) {
       for (let i = 0; i < datas.length; i++) {
         let data = datas[i]
-        var date = new Date(data.created_at)
-        data.date = util.adFormatTime(date)
+        data.date = util.adFormatTime(data.created_at)
       }
     }
 
-    success(res)
+    typeof success == 'function' && success(res)
   }, fail: fail, complete: complete})
 }
 
@@ -37,10 +36,9 @@ function loadShopCommentDetailWithParams({commentId='', params=null, success=nul
       return
     }
 
-    var date = new Date(res.created_at)
-    res.date = util.adFormatTime(date)
+    res.date = util.adFormatTime(res.created_at)
 
-    success(res)
+    typeof success == 'function' && success(res)
   }, fail: fail, complete: complete})
 }
 
@@ -53,10 +51,9 @@ function commentShopWithParams({shopId = '', params = null, success = null, fail
       return
     }
 
-    var date = new Date(res.created_at)
-    res.date = util.adFormatTime(date)
+    res.date = util.adFormatTime(res.created_at)
 
-    success(res)
+    typeof success == 'function' && success(res)
   }, fail: fail, complete: complete})
 }
 

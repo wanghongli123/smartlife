@@ -1,16 +1,22 @@
 <view class="container">
-    <import src="../../templates/shopcell"/>
-    <block wx:for="{{shops}}" wx:for-item="shop" wx:key="*this">
-        <template is="{{shop}}"></template>
-    </block>
+    <view class="top-view"></view>
+    <view class="user-view">
+        <view class="view-avatarplaceholder avatar-view"><image class="view-allscreen" src="src" mode="aspectFill"></image></view>
+        <view class="name-view">name</view>
+    </view>
 
-    <import src="../../templates/placeholderview"/>
-    <template is="placeholderview" data="{{pagestate}}"></template>
-
-    <!--底部tabbar-->
     <view class="tab-view">
         <block wx:for="{{tabNames}}" wx:key="*this">
             <view class="tab-item {{tabIndex==index?'active':''}}" data-tabIndex="{{index}}" bindtap="clickOnTabitemView">{{item}}</view>
         </block>
     </view>
+
+    <!--shopcell-->
+    <import src="../../templates/shopcell"/>
+    <block wx:for="{{shops}}" wx:for-item="shop" wx:key="*this">
+        <template is="shopcell" data="{{...shop, canCollect: true, nameFontSize: 14, seperator: true, index}}"/>
+    </block>
+
+    <import src="../../templates/loadingmorecell"/>
+    <template is="loadingmorecell" data="{{hasMore}}"/>
 </view>

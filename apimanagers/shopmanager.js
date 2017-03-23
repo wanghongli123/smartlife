@@ -13,6 +13,14 @@ function loadShopsWithParams({params=null, success=null, fail=null, complete=nul
   apiManager.request({url: api.shopListUrl(), params: params, success: success, fail: fail, complete: complete})
 }
 
+function loadUserCollectionShopsWithParams({params=null, success=null, fail=null, complete=null}) {
+  apiManager.request({url: api.userCollectionShopsUrl(), params: params, success: success, fail: fail, complete: complete})
+}
+
+function loadUserCommentShopsWithParams({params=null, success=null, fail=null, complete=null}) {
+  apiManager.request({url: api.userCommentShopsUrl(), params: params, success: success, fail: fail, complete: complete})
+}
+
 /*
 * 加载店铺详情.
 **/
@@ -64,8 +72,8 @@ function bookShopWithParams() {
 
 module.exports = {
   loadShopsWithParams: loadShopsWithParams,
-  loadUserCollectedShopsWithParams: loadUserCollectedShopsWithParams,
-  loadUserCommentedShopsWithParams: loadUserCommentedShopsWithParams,
+  loadUserCollectionShopsWithParams: loadUserCollectionShopsWithParams,
+  loadUserCommentShopsWithParams: loadUserCommentShopsWithParams,
   loadShopDetailWithParams: loadShopDetailWithParams,
   collectShopWithParams: collectShopWithParams,
   unCollectShopWithParams: unCollectShopWithParams,

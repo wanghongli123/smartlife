@@ -2,3 +2,7 @@
 @import '../../templates/shopcommentcell.wxss';
 @import '../../templates/placeholderview.wxss';
 @import '../../templates/loadingmorecell.wxss';
+
+.container {
+    
+}

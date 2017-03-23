@@ -9,7 +9,7 @@
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#01d1c1",
-    "navigationBarTitleText": "生活圈",
+    "navigationBarTitleText": "滴铃",
     "navigationBarTextStyle":"light"
   },
   "networkTimeout": {

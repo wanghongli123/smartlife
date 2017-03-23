@@ -1,3 +1,7 @@
+/*
+* api管理类.
+**/
+
 const kQQKAPIClientKey = "api_wxapplekongkong"
 const kQQKAPIClientSecret = "ed6a36bd83f58b68a62a40ebb1f6a210"
 const kQQKAPIHost = "api_wxapplekongkong"
@@ -8,46 +12,14 @@ var util = require("../utils/util.js")
 var config = require("../config.js")
 var api = require('../utils/api.js')
 
-function apiHash(url) {
-    var host = api.lkkHost()
-    var querys = (typeof url == 'string') && url.split(host)
-    var url_ = querys && querys.pop()
-    var plain = kUDID + kUSERTOKEN + url_ + kQQKAPIClientSecret + kUDID
-    return util.MD5(plain)
-}
-
-function header(url) {
-    return {
-        "BAPI-APP-KEY": kQQKAPIHost,
-        "UDID": kUDID,
-        "APP_VERSION": config.appVersion,
-        "BAPI-HASH": apiHash(url),
-        "BAPI-NONCE": kUDID
-    }
-}
-
-function fullUrl(url, data) {
-    var isFirstObj = true
-    var url_ = url
-    for (var key in data) {
-        if (isFirstObj) {
-            isFirstObj = false
-            url_ = url_ + "/?" + key + "=" + encodeURIComponent(data[key])
-        } else {
-            url_ = url_ + "&" + key + "=" + encodeURIComponent(data[key])
-        }
-    }
-    return url_
-}
-
 function lkkRequest({url, data, method, success, fail, complete}) {
-    var fullUrlString = fullUrl(url, data)
+    var fullUrlString = lkkFullUrl(url, data)
     console.log("request url:" + fullUrlString)
     wx.request({
       url: fullUrlString,
       data: {},
       method: method, 
-      header: header(fullUrlString), // 设置请求的 header
+      header: lkkHeader(fullUrlString), // 设置请求的 header
       success: function(res){
         // success
         console.log("request url successed:" + fullUrlString)
@@ -69,6 +41,38 @@ function lkkRequest({url, data, method, success, fail, complete}) {
         typeof complete == 'function' && complete()
       }
     })
+}
+
+function lkkAPIHash(url) {
+    var host = api.lkkHost()
+    var querys = (typeof url == 'string') && url.split(host)
+    var url_ = querys && querys.pop()
+    var plain = kUDID + kUSERTOKEN + url_ + kQQKAPIClientSecret + kUDID
+    return util.MD5(plain)
+}
+
+function lkkHeader(url) {
+    return {
+        "BAPI-APP-KEY": kQQKAPIHost,
+        "UDID": kUDID,
+        "APP_VERSION": config.appVersion,
+        "BAPI-HASH": lkkAPIHash(url),
+        "BAPI-NONCE": kUDID
+    }
+}
+
+function lkkFullUrl(url, data) {
+    var isFirstObj = true
+    var url_ = url
+    for (var key in data) {
+        if (isFirstObj) {
+            isFirstObj = false
+            url_ = url_ + "/?" + key + "=" + encodeURIComponent(data[key])
+        } else {
+            url_ = url_ + "&" + key + "=" + encodeURIComponent(data[key])
+        }
+    }
+    return url_
 }
 
 function request({url='', params={}, method='GET', success=null, fail=null, complete=null}) {

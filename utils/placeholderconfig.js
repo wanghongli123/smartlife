@@ -2,14 +2,11 @@
 
 //根据获取page的提示信息.
 function pagePlaceholderInfo(aliasNm) {
-    if (aliasNm == 'shoplist') {
-        return {
+    return {
+        'shoplist': {
 
         }
-    }
-    return {
-        
-    }
+    }.aliasNm
 }
 
 module.exports = {

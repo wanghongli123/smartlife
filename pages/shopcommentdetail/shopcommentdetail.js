@@ -1,10 +1,14 @@
-//店铺点赞评论详情页面.
+/*
+* 店铺点赞评论详情页面.
+**/
 
 var app = getApp()
 var shopManager = require('../../apimanagers/shopmanager.js')
+var commentManager = require('../../apimanagers/commentmanager.js')
 
 Page({
   data:{
+    // 加载状态.
     pageState: 0,
     shopInfo: null,
     shopComment: null,
@@ -17,6 +21,7 @@ Page({
   },
   onLoad:function(options){
     // 生命周期函数--监听页面加载
+    // 先登录.
     var that = this
     setTimeout(function() {
       if (app.globalData.loginSuccessed) {
@@ -37,8 +42,27 @@ Page({
     }
   },
   ///////////////////////////////////////////view events///////////////////////////////////////////
+  clickOnPlacehoderView: function() {
+    this.setData({
+      pageState: 0
+    })
+    this.loadShopCommentInfo()
+  },
   clickOnFavoriteView: function() {
     //对评论点赞
+    var that = this
+    var commentInfo = this.data.shopComment
+    if (commentInfo.isFavorited) {
+      return
+    }
+
+    commentInfo.isFavorited = true
+    commentInfo.support_num = (commentInfo.support_num - 0) + 1
+    this.setData({
+      shopComment: commentInfo
+    })
+
+    commentManager.supportComment({commentId: this.customerData.commentId});
   },
   clickOnCommentPhotoView: function(e) {
     var images = this.data.shopComment.images
@@ -59,6 +83,7 @@ Page({
 
     var shopInfo = this.data.shopInfo
     if (shopInfo.collected) {
+      // 取消收藏.
       var that = this
       wx.showModal({
         title: '温馨提示',
@@ -70,7 +95,7 @@ Page({
         }
       })
     } else {
-      //收藏
+      // 收藏
       this.collectShop(shopInfo.id)
     }
   },
@@ -86,9 +111,8 @@ Page({
         shopComment: shopComment
       })
       app.globalData.shopComment = null
-    } else {
-      this.loadShopCommentInfo()
     }
+    this.loadShopCommentInfo()
 
     var shopInfo = app.globalData.shop
     if (shopInfo) {
@@ -109,7 +133,7 @@ Page({
   },
   loadShopCommentInfo: function() {
     var that = this
-    shopManager.loadShopCommentDetailWithParams({commentId: this.customerData.commentId, success: function(shopComment) {
+    commentManager.loadShopCommentDetailWithParams({commentId: this.customerData.commentId, success: function(shopComment) {
       that.setData({
         shopComment: shopComment || that.data.shopComment,
         pageState: that.data.pageState != 1 && !shopComment ? 3 : 1

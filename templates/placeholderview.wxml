@@ -9,15 +9,16 @@ pagestate: 0:加载数据中, 1:成功加载数据, 2:加载数据出错, 3: 无
 clickOnPlaceholderView-->
 
 <template name="placeholderview">
-<view class="placeholder-view" wx:if="{{pagestate!=1}}">
+<view class="{{pagestate==1?'view-disappear':'placeholder-view'}}" bindtap="clickOnPlacehoderView">
     <block wx:if="{{pagestate==0}}">
         <image src="../../resources/icon_loading.gif" class="loading-image"></image>
+        <view class="loading-text">努力加载信息中...</view>
     </block>
     <block wx:elif="{{pagestate==2}}">
         <image class="error-image" src="../../resources/icon_network_error.png"></image>
         <view class="reload-view" bindtap="clickOnPlacehoderView">点击重新加载</view>
     </block>
-    <block wx:else>
+    <block wx:elif="{{pagestate==3}}">
         暂无数据
     </block>
 </view>

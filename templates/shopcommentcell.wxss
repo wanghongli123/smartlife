@@ -113,6 +113,10 @@
     white-space: nowrap;
 }
 
+.shopcommentcard-view .right-view.active {
+    color: #9ca4a8;
+}
+
 .shop-comment-cell .comment-view {
     margin-top: 7rpx;
     font-family: PingFangSC;

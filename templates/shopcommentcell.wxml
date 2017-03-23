@@ -26,10 +26,10 @@ commentIndex: 索引号
                             </block>
                         </view>
                     </view>
-                    <!--<view class="right-view">
-                        <image src="{{isUp?'../../resources/icon_zan-red.png':'../../resources/icon_zan-empty.png'}}"></image>
-                        <view>{{upcount}}人点赞</view>
-                    </view>-->
+                    <view class="right-view {{isFavorited?'active':''}}" catchtap="clickOnFavoriteView" data-index="{{commentIndex}}">
+                        <image src="{{isFavorited?'../../resources/icon_zan-red.png':'../../resources/icon_zan-empty.png'}}"></image>
+                        <view>{{support_num}}人点赞</view>
+                    </view>
                 </view>
                 <view class="comment-view">
                     {{content}}

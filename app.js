@@ -11,7 +11,7 @@ App({
       logs.unshift(Date.now())
       wx.setStorageSync('logs', logs)
 
-      this.getLocation(null)
+      // this.getLocation(null)
       this.loadShopCommentTags(null)
   },
   getLocation: function(cb) {
@@ -75,25 +75,12 @@ App({
   },
   //////////////////////////////////////////////private events/////////////////////////////////////
   login: function(cb) {
-    this.showLoadingView('登录中...')
     this.loginByCode(cb)
     return
     //用户登录
     var that = this
     wx.checkSession({
       success: function(){
-        //登录态未过期
-        // wx.getStorage({
-        //   key: kLoginCodeKey,
-        //   success: function(res){
-        //     // success
-        //     that.loginWithKey(res, {}, cb)
-        //   },
-        //   fail: function() {
-        //     // fail
-        //     that.loginByCode(cb)
-        //   }
-        // })
         wx.hideToast()
         typeof cb == 'function' && cb()
       },
@@ -133,7 +120,7 @@ App({
       wx.hideToast()
       that.globalData.loginSuccessed = true
       that.globalData.userId = res.userId
-      typeof cb == 'function' && cb()
+      cb()
     }, fail: function() {
       wx.hideToast()
       that.alertUserLoginFailedAndRelogin(cb)
@@ -163,7 +150,7 @@ App({
       var that = this
       appManager.loadShopCommentTags({success: function(tags) {
         that.globalData.commentTags = tags
-        typeof cb == 'function' && cb(tags)
+        typeof cb == 'function' && cb(this.globalData.commentTags)
       }})
     }
   },

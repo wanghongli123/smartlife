@@ -2,6 +2,9 @@
     <!--背景图片-->
     <image class="bg-view" src="../../resources/shopcomment-bg.jpg"></image>
 
+    <import src="../../templates/placeholderview"/>
+    <template is="placeholderview" data="{{pagestate: pageState}}"/>
+
     <view class="content-view">
         <!--详情卡片页面-->
         <block wx:if="{{shopComment}}">
@@ -27,7 +30,4 @@
             </block>
         </view>-->
     </view>
-
-    <import src="../../templates/placeholderview"/>
-    <template is="placeholderview" data="{{pagestate: pageState}}"/>
 </view>

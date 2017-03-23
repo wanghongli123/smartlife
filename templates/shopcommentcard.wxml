@@ -63,13 +63,13 @@
                         </view>
                     </block>
                 </view>
-                <!--<view class="other-view">
+                <view wx:if="{{browse_num}}" class="other-view">
                     <view class="up-view {{isFavorited?'active':''}}" catchtap="clickOnFavoriteView">
                         <image class="up-icon" src="{{isFavorited?'../../resources/icon_zan-red.png':'../../resources/icon_zan-empty.png'}}"></image>
-                        5人赞
+                        {{support_num}}人赞
                     </view>
-                    浏览30次数
-                </view>-->
+                    浏览  {{browse_num}}  次
+                </view>
             </view>
         </view>
     </view>

@@ -1,6 +1,10 @@
+/*
+* 店铺评论列表页.
+**/
 
 var app = getApp();
 var shopManager = require('../../apimanagers/shopmanager.js')
+var commentManager = require('../../apimanagers/commentmanager.js')
 
 Page({
   data:{
@@ -64,6 +68,25 @@ Page({
       urls: comment.images
     })    
   },
+  clickOnFavoriteView: function(e) {
+    var comments = this.data.comments
+    if (comments.length <= e.currentTarget.dataset.index) {
+      return
+    }
+
+    var comment = comments[e.currentTarget.dataset.index]
+    if (comment.isFavorited) {
+      return
+    }
+    
+    comment.isFavorited = true
+    comment.support_num = (comment.support_num - 0) + 1
+    this.setData({
+      comments: comments
+    })
+
+    commentManager.supportComment({commentId: comment.id});
+  },
   /////////////////////////////////////////////private events//////////////////////////////////////
   loadComments: function() {
     if (this.customerData.isInNetworking) {
@@ -72,7 +95,7 @@ Page({
     this.customerData.isInNetworking = true
 
     var that = this
-    shopManager.loadShopCommentsWithParams({shopId: this.customerData.shopId, params:this.loadCommentsParams(), success: this.loadCommentsSuccess, fail: this.loadCommentsFail, compelte: function() {
+    commentManager.loadShopCommentsWithParams({shopId: this.customerData.shopId, params:this.loadCommentsParams(), success: this.loadCommentsSuccess, fail: this.loadCommentsFail, compelte: function() {
       setTimeout(function() {
         that.customerData.isInNetworking = false
       }, 2000)

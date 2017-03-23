@@ -1,42 +1,67 @@
-//店铺评论、点赞页面.
+/*
+* 店铺评论、点赞页面.
+**/
+
 var app = getApp()
 var config = require('../../config.js')
 var util = require('../../utils/util.js')
 var appManager = require('../../apimanagers/appmanager.js')
 var shopManager = require('../../apimanagers/shopmanager.js')
+var commentManager = require('../../apimanagers/commentmanager.js')
 
 Page({
   data:{
+    //总得分.
     totalScore: 0,
     totalScoreLabel: config.kCommentScoreLabels[0],
+    //品质得分.
     pinzhiScore: 0,
     pinzhiScoreLabel: config.kCommentScoreLabels[0],
+    //速度得分.
     suduScore: 0,
     suduScoreLabel: config.kCommentScoreLabels[0],
+    //态度得分.
     taiduScore: 0,
     taiduScoreLabel: config.kCommentScoreLabels[0],
+    //评论你的图片.
     images: [],
+    //是否可以添加更多图片.
     canAddingMorePhotos: true,
+    //评论信息.
     comment: '',
+    //可输入的评论字数.
     canInputCommentCount: config.kMaxCommentInputCount,
+    //建议.
     advice:'',
+    //可输入的建议最大字数.
     canInputAdviceCount: config.kMaxCommentInputCount,
+    //评论的标签.
     tags: [],
+    //评论标签是否可选.
     tagEnable: true,
+    //是否显示全部标签.
     showAddingMoreTag: false,
+    //评论的店铺信息.
     shopInfo: null,
+    //当前的加载状态.
     pageState: 0,
+    //当前是否满足发表评论的条件.
     postingEnable: false,
   },
   customerData: {
+    //全部的标签.
     tags: [],
     shopId: '',
+    //评论服务的id.
     serviceId: '',
+    //已上传的图片url.
     uploadedImageUrls: [],
+    //当前是否处于网络交互状态.
     isInNetworking: false,
   },
   onLoad:function(options){
     // 生命周期函数--监听页面加载
+    // 需要登录才能点赞，否则先登录.
     var that = this
     setTimeout(function() {
       if (app.globalData.loginSuccessed) {
@@ -49,6 +74,16 @@ Page({
     }, 500)
   },
   ///////////////////////////////////////////view events////////////////////////////////////////
+  clickOnPlacehoderView: function() {
+    this.setData({
+      pageState: 0
+    })
+    $options = {
+      shopId: this.customerData.shopId,
+      category_id: this.customerData.serviceId
+    }
+    this.viewDidLoad($options)
+  },
   clickOnDeleteImageView: function(e) {
     var index = e.currentTarget.dataset.index
     var images = this.data.images
@@ -156,18 +191,6 @@ Page({
       default:{}
     }
   },
-  clickOnPostingCommentView: function() {
-    if (!this.data.postingEnable) {
-      return;
-    }
-
-    if (this.customerData.isInNetworking) {
-      return
-    }
-    this.customerData.isInNetworking = true
-    this.showLoadingView('发布中, 请稍后...')
-    this.uploadImages()
-  },
   clickOnShopTagView: function(e) {
     var tags = this.data.tags
     var tag = tags[e.currentTarget.dataset.index]
@@ -226,10 +249,19 @@ Page({
       canInputAdviceCount: config.kMaxCommentInputCount - e.detail.value.length
     })
   },
+  clickOnPostingCommentView: function() {
+    if (this.customerData.isInNetworking) {
+      return
+    }
+    
+    this.customerData.isInNetworking = true
+    this.showLoadingView('发布中, 请稍后...')
+    this.uploadImages()
+  },
   ////////////////////////////////////////////private events///////////////////////////////////////
   viewDidLoad: function(options) {
-    this.customerData.shopId = 51//options['shopId']
-    this.customerData.serviceId = 1//options['category_id']
+    this.customerData.shopId = options['shopId']
+    this.customerData.serviceId = options['category_id']
 
     var that = this
     app.loadShopCommentTags(function(tags) {
@@ -251,21 +283,20 @@ Page({
       })
     }})
   },
-  selectedTagsForPosting: function() {
+  updatePostintViewEnable: function() {
+    var hasSelectedTag = false
     var tags = this.data.tags
-    var selectedTags = []
     for (let i = 0; i < tags.length; i++) {
-      let tempTag = tags[i]
-      if (tempTag.isSelected) {
-        selectedTags.push(tempTag.id)
-      }
-
-      if (selectedTags.length == 3) {
-        break
+      let tag = tags[i]
+      if (tag.isSelected) {
+        hasSelectedTag = true
+        break;
       }
     }
 
-    return selectedTags
+    this.setData({
+      postingEnable: hasSelectedTag && this.data.totalScore > 0
+    })
   },
   uploadImages: function() { 
     //已经全部上传完，可以上传具体的评论内容.
@@ -300,7 +331,7 @@ Page({
       id: this.customerData.shopId
     }
     var that = this
-    shopManager.commentShopWithParams({shopId:this.customerData.shopId, params: params, success: function(res) {
+    commentManager.commentShopWithParams({shopId:this.customerData.shopId, params: params, success: function(res) {
       that.showLoadingView('发布成功!')
       setTimeout(function() {
         that.gotoShopCommentDetailView(that.data.shopInfo, res)
@@ -313,6 +344,22 @@ Page({
         wx.hideToast()
       }, 2000)
     }})
+  },
+  selectedTagsForPosting: function() {
+    var tags = this.data.tags
+    var selectedTags = []
+    for (let i = 0; i < tags.length; i++) {
+      let tempTag = tags[i]
+      if (tempTag.isSelected) {
+        selectedTags.push(tempTag.id)
+      }
+
+      if (selectedTags.length == 3) {
+        break
+      }
+    }
+
+    return selectedTags
   },
   showLoadingView(msg) {
     wx.showToast({
@@ -327,21 +374,6 @@ Page({
     var url = '../shopcommentdetail/shopcommentdetail?shopId=' + shop.id + '&commentId=' + comment.id
     wx.redirectTo({
       url: url
-    })
-  },
-  updatePostintViewEnable: function() {
-    var hasSelectedTag = false
-    var tags = this.data.tags
-    for (let i = 0; i < tags.length; i++) {
-      let tag = tags[i]
-      if (tag.isSelected) {
-        hasSelectedTag = true
-        break;
-      }
-    }
-
-    this.setData({
-      postingEnable: hasSelectedTag && this.data.totalScore > 0
     })
   }
 })

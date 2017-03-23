@@ -20,7 +20,6 @@
         </view>
         <view catchtap="clickOnOptionsBgView" class="options-bg view-allscreen {{showOptions ? 'options-bg-show' : 'options-bg-hide'}}">
         </view>
-        
         <view class="top-padding-view"></view>-->
 
         <!--shopcell-->

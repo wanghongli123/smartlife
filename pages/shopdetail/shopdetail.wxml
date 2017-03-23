@@ -1,5 +1,5 @@
 <view class="container">
-    <scroll-view class="shop-view" scroll-y="true" scroll-into-view="{{scrollIntoView}}">
+    <scroll-view class="shop-view" wx:if="{{pageState!=0}}" scroll-y="true" scroll-into-view="{{scrollIntoView}}">
         <swiper wx:if="{{shopInfo&&shopInfo.images.length>0}}" class="shopimages-view" indicator-dots="true" autoplay="true" interval="4000" duration="1000" circular="true">
             <block wx:for="{{shopInfo.images}}" wx:key="*this">
                 <swiper-item>

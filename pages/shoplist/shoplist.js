@@ -1,5 +1,6 @@
-//店铺列表页面.
-//根据返回的数据，决定最多支持三个级别.
+/*
+* 店铺列表页面.
+**/
 
 var app = getApp()
 var shareConfig = require('../../utils/shareconfig.js')
@@ -23,10 +24,10 @@ Page({
     isInNetworking: false
   },
   onLoad: function(options) {
-    // 生命周期函数--监听页面加载
+    // 生命周期函数--监听页面加载    
     var that = this
     setTimeout(function() {
-        if (app.globalData.loginSuccessed) {
+      if (app.globalData.loginSuccessed) {
         that.viewDidLoad(options)
       } else {
         app.login(function() {
@@ -85,11 +86,11 @@ Page({
     // })
   },
   clickOnOptionsBgView: function() {
-      this.setData({
-          showOptions: false,
-          metaValues: [],
-          selectedMetaIndex: -1
-      })
+    this.setData({
+        showOptions: false,
+        metaValues: [],
+        selectedMetaIndex: -1
+    })
   },
   clickOnOptionItemView: function(e) {
     let metaValues = this.data.metaValues

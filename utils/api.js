@@ -7,11 +7,11 @@ function lkkUploadImageConfigUrl() {
 }
 
 function host() {
-    return 'http://localhost:8888';//'http://crmtest.baixing.com.cn'
+    return 'http://120.77.170.68'//'http://crmtest.baixing.com.cn'//'http://localhost:8888';
 }
 
 function userLoginUrl() {
-    return host() + '/wxa/login';///judy/wxa/comment?debug=0532'
+    return host() + '/wxa/login' //'/judy/wxa/comment?debug=0532'
 }
 
 function shopListUrl() {
@@ -67,6 +67,10 @@ function getUploadImageConfigUrl() {
     return lkkHost() + '/api/config.getImgConfig'
 }
 
+function supportShopCommentUrl(commentId) {
+    return host() + '/wxa/comment/' + commentId + "/support"
+}
+
 module.exports = {
     host: host,
     lkkHost: lkkHost,
@@ -81,5 +85,6 @@ module.exports = {
     userCollectShopUrl: userCollectShopUrl,
     userUnCollectShopUrl: userUnCollectShopUrl,
     getShopCommentTagsUrl: getShopCommentTagsUrl,
-    getUploadImageConfigUrl: getUploadImageConfigUrl
+    getUploadImageConfigUrl: getUploadImageConfigUrl,
+    supportShopCommentUrl: supportShopCommentUrl
 }

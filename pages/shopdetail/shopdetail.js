@@ -1,11 +1,15 @@
+/*
+* 店铺详情页面. 
+*/
 
 const kLimitShowTagsNum = 6
 var app = getApp()
 var shopManager = require('../../apimanagers/shopmanager.js')
+var commentManager = require('../../apimanagers/commentmanager.js')
 
 Page({
   data:{
-    shopInfo: {},
+    shopInfo: null,
     pageState: 0,
     scrollIntoView: '',
     showAllTags: false,
@@ -175,6 +179,25 @@ Page({
       urls: comment.images
     })    
   },
+  clickOnFavoriteView: function(e) {
+    var comments = this.data.shopInfo.comments
+    if (comments.length <= e.currentTarget.dataset.index) {
+      return
+    }
+
+    var comment = comments[e.currentTarget.dataset.index]
+    if (comment.isFavorited) {
+      return
+    }
+
+    comment.isFavorited = true
+    comment.support_num = (comment.support_num - 0) + 1
+    this.setData({
+      shopInfo: this.data.shopInfo
+    })
+
+    commentManager.supportComment({commentId: comment.id});
+  },
   ///////////////////////////////////////////////private events////////////////////////////////////
   viewDidLoad: function(options) {
     var shopInfo = app.globalData.shopInfo
@@ -264,7 +287,7 @@ Page({
   loadShopComments: function() {
     var shopId = this.customerData.shopId
     var success = this.loadShopCommentsSuccess
-    shopManager.loadShopCommentsWithParams({shopId: shopId, success: success})
+    commentManager.loadShopCommentsWithParams({shopId: shopId, success: success})
   },
   loadShopCommentsSuccess: function(res) {
     if (!res || !res.data || res.data.length == 0) {

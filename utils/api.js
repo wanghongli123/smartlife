@@ -23,8 +23,13 @@ function userCollectionShopsUrl(userId) {
     return host() + '/wxa/collection'
 }
 
+//用户评论过的店铺.
 function userCommentShopsUrl() {
-    return host() + '/wxa/comment'
+}
+
+//用户所有的评论.
+function userCommentsUrl() {
+    return host() + '/wxa/comment';
 }
 
 function shopDetailUrl(shopId) {
@@ -91,5 +96,6 @@ module.exports = {
     userUnCollectShopUrl: userUnCollectShopUrl,
     getShopCommentTagsUrl: getShopCommentTagsUrl,
     getUploadImageConfigUrl: getUploadImageConfigUrl,
-    supportShopCommentUrl: supportShopCommentUrl
+    supportShopCommentUrl: supportShopCommentUrl,
+    userCommentsUrl: userCommentsUrl
 }

@@ -50,6 +50,6 @@ commentIndex: 索引号
                 </view>
             </view>
         </view>
-        <view class="view-bottom-line"></view>
+        <view wx:if="{{seperator}}" class="view-bottom-line"></view>
     </view>
 </template>

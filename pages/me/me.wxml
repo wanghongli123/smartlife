@@ -1,20 +1,37 @@
 <view class="container">
-    <view class="top-view"></view>
     <view class="user-view">
-        <view class="view-avatarplaceholder avatar-view"><image class="view-allscreen" src="src" mode="aspectFill"></image></view>
+        <view class="view-avatarplaceholder avatar-view">
+            <image class="view-allscreen" src="src" mode="aspectFill"></image>
+        </view>
         <view class="name-view">name</view>
     </view>
 
     <view class="tab-view">
-        <block wx:for="{{tabNames}}" wx:key="*this">
-            <view class="tab-item {{tabIndex==index?'active':''}}" data-tabIndex="{{index}}" bindtap="clickOnTabitemView">{{item}}</view>
-        </block>
+        <view class="content-view">
+            <block wx:for="{{tabNames}}" wx:key="*this">
+                <view class="tab-item" data-tabIndex="{{index}}" bindtap="clickOnTabitemView">
+                    <view class="tab-name {{tabIndex==index?'active':''}}">
+                        {{item}}
+                    </view>
+                    <view class="dot-view" hidden="{{tabIndex!=index}}"></view>
+                </view>
+            </block>
+        </view>
     </view>
-
-    <!--shopcell-->
-    <import src="../../templates/shopcell"/>
-    <block wx:for="{{shops}}" wx:for-item="shop" wx:key="*this">
-        <template is="shopcell" data="{{...shop, canCollect: true, nameFontSize: 14, seperator: true, index}}"/>
+    
+    <block wx:if="{{tabIndex == 0}}">
+        <!--shopcell-->
+        <import src="../../templates/shopcell"/>
+        <block wx:for="{{datas}}" wx:for-item="shop" wx:key="*this">
+            <template is="shopcell" data="{{...shop, canCollect: true, nameFontSize: 14, seperator: true, index}}"/>
+        </block>
+    </block>
+    <block wx:else>
+        <!--commentCell-->
+        <import src="../../templates/shopcommentcell"/>
+        <block wx:for="{{datas}}" wx:key="*this">
+            <template is="shopcommentcell" data="{{...item, commentIndex: index, seperator: true}}"/>
+        </block>
     </block>
 
     <import src="../../templates/loadingmorecell"/>

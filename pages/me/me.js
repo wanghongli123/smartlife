@@ -1,13 +1,15 @@
 //我的页面.包括我的收藏和我的评论.
 
+var app = getApp()
 var util = require('../../utils/util.js')
 var shopmanager = require('../../apimanagers/shopmanager.js')
+var commentmanager = require('../../apimanagers/commentmanager.js')
 
 Page({
   data:{
     tabNames: [],
     tabIndex: 0,
-    shops: [],
+    datas: [],
     user: null,
     hasMore: true
   },
@@ -15,14 +17,14 @@ Page({
     tabItems: [
       {
         name: '我的收藏',
-        shops: [],
+        datas: [],
         page: 1,
         isInNetworking: false,
         hasMore: true,
       },
       {
-        name: '我的点赞',
-        shops: [],
+        name: '我的点评',
+        datas: [],
         page: 1,
         isInNetworking: false,
         hasMore: true
@@ -43,11 +45,11 @@ Page({
       tabNames: tabNames
     })
 
-    this.loadMoreShops()
+    this.loadMoreDatas()
   },
   onReachBottom: function() {
     // 页面上拉触底事件的处理函数
-    this.loadMoreShops()
+    this.loadMoreDatas()
   },
   onShareAppMessage: function() {
     // 用户点击右上角分享
@@ -61,28 +63,28 @@ Page({
   clickOnTabitemView: function(e) {
     var index = e.currentTarget.dataset.tabindex
     var item = this.customerData.tabItems[index]
-    if (index == this.data.tabIndex && item.shops.length > 0) {
+    if (index == this.data.tabIndex && item.datas.length > 0) {
       return
     }
     
     this.setData({
       tabIndex: index,
-      shops: item.shops,
+      datas: item.datas,
       hasMore: item.hasMore,
     })
 
-    if (item.shops.length == 0 && item.hasMore) {
-      this.loadMoreShops()
+    if (item.datas.length == 0 && item.hasMore) {
+      this.loadMoreDatas()
     }
   },
   clickOnShopCell: function(e) {
     var index = e.currentTarget.dataset.index
-    var shops = this.data.shops
-    if (index >= shops.length) {
+    var datas = this.data.datas
+    if (index >= datas.length) {
       return
     }
 
-    var shopInfo = shops[index]
+    var shopInfo = datas[index]
     app.globalData.shopInfo = shopInfo
     wx.navigateTo({
       url: '../shopdetail/shopdetail?shopId=' + shopInfo.id 
@@ -95,12 +97,12 @@ Page({
     }
 
     var index = e.currentTarget.dataset.index
-    var shops = this.data.shops
-    if (index >= shops.length) {
+    var datas = this.data.datas
+    if (index >= datas.length) {
       return
     }
 
-    var shopInfo = shops[index]
+    var shopInfo = datas[index]
     if (shopInfo.collected) {
       var that = this
       wx.showModal({
@@ -117,15 +119,66 @@ Page({
       this.collectShop(this.data.tabIndex, shopInfo.shop_id)
     }
   },
+  clickOnShopCommentView: function(e) {
+    var commentIndex = e.currentTarget.dataset.index
+    var comments = this.data.datas
+    if (!comments || comments.length <= commentIndex) {
+      return
+    }
+
+    var comment = comments[commentIndex]
+    app.globalData.shopComment = comment
+
+    wx.navigateTo({
+      url: '../shopcommentdetail/shopcommentdetail?shopId=' + comment.shop_id + '&commentId=' + comment.id,
+    })
+  },
+  clickOnCommentImageView: function(e) {
+    var commentIndex = e.currentTarget.dataset.commentIndex
+    var comments = this.data.datas
+    if (!comments || comments.length <= commentIndex) {
+      return
+    }
+
+    var imgIndex = e.currentTarget.dataset.index
+    var comment = comments[commentIndex]
+    if (!comment.images || comment.images.length <= imgIndex) {
+      return
+    }
+
+    wx.previewImage({
+      current: comment.images[imgIndex],
+      urls: comment.images
+    })    
+  },
+  clickOnFavoriteView: function(e) {
+    var comments = this.data.datas
+    if (comments.length <= e.currentTarget.dataset.index) {
+      return
+    }
+
+    var comment = comments[e.currentTarget.dataset.index]
+    if (comment.isFavorited) {
+      return
+    }
+    
+    comment.isFavorited = true
+    comment.support_num = comment.support_num - (-1)
+    this.setData({
+      datas: this.data.datas
+    })
+
+    commentmanager.supportComment({commentId: comment.id});
+  },
   ////////////////////////////////private events///////////////////////////////////////////////////
-  loadMoreShops: function() {
+  loadMoreDatas: function() {
     var item = this.customerData.tabItems[this.data.tabIndex]
-    if (item.isInNetworking) {
+    if (item.isInNetworking || !item.hasMore) {
       return
     }
     item.isInNetworking = true
 
-    var params = this.loadingShopParams(this.data.tabIndex)
+    var params = this.loadingDatasParam(this.data.tabIndex)
     var complete = function() {
       setTimeout(function() {
         item.isInNetworking = false
@@ -134,43 +187,43 @@ Page({
     var that = this
     if (this.data.tabIndex == 0) {      
       var success = function(res) {
-        that.loadShopsSuccess(0, res)
+        that.loadDatasSuccess(0, res)
       }
       var fail = function(res) {
-        that.loadShopsFailed(0)
+        that.loadDatasFailed(0)
       }
       shopmanager.loadUserCollectionShopsWithParams({params: params, success: success, fail: fail, complete: complete})
     } else {
       var success = function(res) {
-        that.loadShopsSuccess(1, res)
+        that.loadDatasSuccess(1, res)
       }
       var fail = function(res) {
-        that.loadShopsFailed(1)
+        that.loadDatasFailed(1)
       }
-      shopmanager.loadUserCommentShopsWithParams({params: params, success: success, fail: fail, complete: complete})
+      commentmanager.loadUserComments({params: params, success: success, fail: fail, complete: complete})
     }
   },
-  loadShopsSuccess: function(tabIndex, res) {
+  loadDatasSuccess: function(tabIndex, res) {
     var item = this.customerData.tabItems[tabIndex]
-    item.shops = item.shops.concat(res.data)
-    item.hasMore = item.shops.length < res.total
+    item.datas = item.datas.concat(res.data)
+    item.hasMore = item.datas.length < res.total
     if (item.hasMore) {
       item.page += 1
     }
 
     if (this.data.tabIndex == tabIndex) {
       this.setData({
-        shops: item.shops,
+        datas: item.datas,
         hasMore: item.hasMore
       })
     }
   },
-  loadShopsFailed: function(tabIndex) {
+  loadDatasFailed: function(tabIndex) {
     if (this.data.tabIndex == tabIndex) {
       this.showLoadingView('加载数据出错...')
     }
   },
-  loadingShopParams: function(tagIndex) {
+  loadingDatasParam: function(tagIndex) {
     var item = this.customerData.tabItems[tagIndex]
     return {
       page: item.page
@@ -213,47 +266,21 @@ Page({
     }})
   },
   updateAfterCollectFinished: function(shopId, isCollected) {
-    var commentItem = this.customerData.tabItems[1]
-    commentItem.shops = this.updateShopsCollectionState(shopId, isCollected, commentItem.shops)
-
-    var collectionItem = this.customerData.tabItems[0]
-    for (var i = 0; i < collectionItem.shops.length; i++) {
-      let tshop = collectionItem.shops[i]
+    var tabItem = this.customerData.tabItems[0]
+    for (var i = 0; i < tabItem.datas.length; i++) {
+      let tshop = tabItem.datas[i]
       if (tshop.id == shopId) {
         break;
       }
     }
 
-    if (!isCollected) {
-      if (i < collectionItem.shops.length) {
-        util.arrayRemoteAt(collectionItem.shops, i) 
-      }
-    } else {
-      if (i >= collectionItem.shops.length) {
-        for (var i = 0; i < commentItem.shops.length; i++) {
-          let tshop = commentItem.shops[i]
-          if (tshop.id == shopId) {
-            collectionItem.shops = [tshop].concat(collectionItem.shops)
-            break;
-          }
-        }
-      }
+    if (i < tabItem.datas.length) {
+      util.arrayRemoteAt(tabItem.datas, i) 
     }
 
     this.setData({
-      shops: this.data.tabIndex == 0 ? collectionItem.shops : commentItem.shops
+      datas: tabItem.datas
     })
-  },
-  updateShopsCollectionState: function(shopId, isC, shops) {
-    for (let i = 0; i < shops.length; i++) {
-      let shop = shops[i];
-      if (shop.shop_id == shopId) {
-        shop.collected = isC
-        shop.collected_num += isC ? (1) : (-1)
-        break;
-      }
-    }
-    return shops
   },
   showLoadingView(msg) {
     wx.showToast({

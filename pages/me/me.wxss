@@ -1,56 +1,79 @@
 /* pages/me/me.wxss */
 @import '../../templates/shopcell.wxss';
 @import '../../templates/loadingmorecell.wxss';
-
-.top-view {
-    top: 0;
-    position: fixed;
-}
+@import '../../templates/shopcommentcell.wxss';
 
 .user-view {
     width: 100%;
-    height: 120rpx;
+    height: 146rpx;
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: lightblue;
+    background-color: #757575;
 }
 
 .user-view .avatar-view {
     margin-left: 20rpx;
     width: 100rpx;
     height: 100rpx;
-    border-radius: 50rpx;
+    border-radius: 55rpx;
+    border: solid 5rpx white;
 }
 
 .user-view .name-view {
-    color: black;
+    margin-left: 40rpx;
+    font-family: PingFangSC;
     font-size: 20px;
-    margin-left: 20rpx;
+    font-weight: 600;
+    color: #ffffff;
 }
 
 .tab-view {
     width: 100%;
-    height: 68rpx;
+    height: 80rpx;
     bottom: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    box-sizing: border-box;
+    padding: 0 30rpx;
+}
+
+.tab-view .content-view {
+    width: 100%;
+    flex: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: white;
-    border-bottom:solid 1px #eaeaea;
+    border-bottom: 1rpx solid #eaeaea;
 }
 
-.tab-item {
+.tab-view .tab-item {
     width: 100%;
     height: 100%;
-    font-size: 14px;
-    color: #444444;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tab-view .tab-name {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: PingFangSC;
+    font-size: 14px;
+    font-weight: 600;
+    color: #888888;
 }
 
-.tab-item.active {
-    color: red;
+.tab-view .tab-name.active {
+    color: #ff4466;
+}
+
+.tab-view .dot-view {
+    width: 80rpx;
+    height: 6rpx;
+    background-color: #ff4466;
 }

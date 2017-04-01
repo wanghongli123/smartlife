@@ -65,9 +65,15 @@ function supportComment({commentId = '', params = null, success = null, fail, co
   apiManager.request({url: url, method: 'POST', success: success, fail: fail, complete: complete});
 }
 
+function loadUserComments({params = null, success = null , fail, complete}) {
+  var url = api.userCommentsUrl()
+  apiManager.request({url: url, method: 'GET', success: success, fail: fail, complete: complete});
+}
+
 module.exports = {
     loadShopCommentsWithParams: loadShopCommentsWithParams,
     loadShopCommentDetailWithParams: loadShopCommentDetailWithParams,
     commentShopWithParams: commentShopWithParams,
-    supportComment: supportComment
+    supportComment: supportComment,
+    loadUserComments: loadUserComments
 }

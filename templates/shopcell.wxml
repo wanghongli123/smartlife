@@ -34,8 +34,8 @@ index: 当前的索引
                     </view>
                 </view>
             </view>
-            <view wx:if="{{canCollect}}" class="operation-view" style="color:{{collected?'lightgray':'#444444'}};" catchtap="clickOnCollectionView" data-index="{{index}}">
-                <image class="icon-collection" src="{{collected?'../../resources/icon_favorite.png':'../../resources/icon_favorite.png'}}" mode="aspectFill"></image>
+            <view wx:if="{{canCollect}}" class="operation-view" catchtap="clickOnCollectionView" data-index="{{index}}">
+                <image class="icon-collection" src="{{collected?'../../resources/icon_favorite.png':'../../resources/icon_no_favorite.png'}}" mode="aspectFill"></image>
                 {{collected?'已收藏':'收藏'}}
             </view>
         </view>

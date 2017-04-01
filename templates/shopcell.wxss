@@ -106,6 +106,7 @@
     font-size: 10px;
     box-sizing: border-box;
     height: 100%;
+    color: #444444;
 }
 
 .shop-cell .icon-collection {

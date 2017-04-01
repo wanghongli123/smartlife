@@ -96,7 +96,7 @@
 
         <!--底部操作栏-->
         <import src="../../templates/shopdetailbottomview"/>
-        <template is="shopdetailbottomview" data="{{isCollected: shopInfo.collected, collectionInfo: (shopInfo.collected_num ? shopInfo.collected_num : 0) +'人'}}"/>
+        <template is="shopdetailbottomview" data="{{collected: shopInfo.collected, collectionInfo: (shopInfo.collected_num ? shopInfo.collected_num : 0) +'人'}}"/>
     </scroll-view>
     <!--无数据提示页面-->
     <import src="../../templates/placeholderview"/>

@@ -40,6 +40,7 @@
     box-sizing: border-box;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: #444444;
 }
 
 .shopdetail-bottom-view .icon_collection {
